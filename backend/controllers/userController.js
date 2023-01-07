@@ -2,53 +2,42 @@ const User = require("../models/User");
 const Note = require("../models/Note");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const multer = require('multer');
+const multer = require("multer");
 const ImageModal = require("../models/Image");
-const fs = require('fs')
-
-
-
+const fs = require("fs");
 
 // @ Create new user
 const createNewUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { role, name, email, password } = req.body;
 
-  if (!username || !password ) {
+  if (!username || !password) {
     return res.status(400).json({ message: "Al fields are require" });
   }
 
-  const duplicates = await User.find({ username }).lean().exec();
+  const duplicates = await User.find({ email }).lean().exec();
 
   if (duplicates.length) {
     return res.status(409).json({
-      message: "Username already exist",
+      message: "Email already exist",
     });
   }
 
   const hashedPwd = await bcrypt.hash(password, 10);
 
-  const userObject = { username, password: hashedPwd };
+  const userObject = { email, password: hashedPwd };
 
   const user = await User.create(userObject);
 
   if (!user) res.status(200).json({ messssage: `Invalid user data recevied` });
 
-  res.status(201).json({ messssage: `New user ${username} created` });
+  res.status(201).json({ messssage: `New user ${email} created` });
 });
-
-
-
 
 // @ Update user
 const updateUser = asyncHandler(async (req, res) => {
   const { id, username, cid } = req.body;
 
-  if (
-    !id ||
-    !username ||
-    !id
-   
-  ) {
+  if (!id || !username || !id) {
     return res
       .status(400)
       .json({ message: "All fields except password are required" });
@@ -62,17 +51,7 @@ const updateUser = asyncHandler(async (req, res) => {
   // Check for duplicate
   const foundUser = await User.findOne({ username }).lean().exec();
 
-  // Allow updates to the original user
-  // if (duplicate && duplicate?._id.toString() !== id) {
-  //   return res.status(409).json({ message: "Duplicate username" });
-  // }
-
-  // if (password) {
-  //   // Hash password
-  //   user.password = await bcrypt.hash(password, 10); // salt rounds
-  // }
-
-  foundUser.cid = cid
+  foundUser.cid = cid;
 
   const updatedUser = await foundUser.save();
 
@@ -113,6 +92,6 @@ module.exports = {
   createNewUser,
   updateUser,
   deleteUser,
-uploadImage,
-getImage
+  uploadImage,
+  getImage,
 };
