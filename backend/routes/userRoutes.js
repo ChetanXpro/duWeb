@@ -6,10 +6,9 @@ const verifyJWT = require("../middleware/verifyJWT");
 
 // router.use(verifyJWT);
 
-router.get("/", verifyJWT, userController.getAllUser);
+
 router.post("/", userController.createNewUser);
-router.post("/upload", userController.uploadImage);
-router.get("/upload", userController.getImage);
+
 router.patch("/", verifyJWT, userController.updateUser);
 router.delete("/", verifyJWT, userController.deleteUser);
 

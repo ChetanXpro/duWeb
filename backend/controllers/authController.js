@@ -6,7 +6,7 @@ const asyncHandler = require("express-async-handler");
 
 const login = asyncHandler(async (req, res) => {
   const cookies = req.cookies
-  console.log(`cookie on login ${JSON.stringify(cookies)}`)
+
   const { username, password } = req.body;
   if (!username || !password) {
     res.status(400).json({ message: "All field are required" });
@@ -42,7 +42,6 @@ const login = asyncHandler(async (req, res) => {
     { expiresIn: "24h" }
   );
 
-  let newRefreshTokenArray = !cookies?.jwt ? foundUser.refreshToken : foundUser.refreshToken.filter(r=> r !== cookies?.jwt)
 
   if(cookies?.jwt){
     

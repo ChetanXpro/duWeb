@@ -2,15 +2,13 @@ const User = require("../models/User");
 const Note = require("../models/Note");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const multer = require("multer");
-const ImageModal = require("../models/Image");
-const fs = require("fs");
+// const fs = require("fs");
 
 // @ Create new user
 const createNewUser = asyncHandler(async (req, res) => {
   const { role, name, email, password } = req.body;
 
-  if (!username || !password) {
+  if (!name || !password || !email || !role) {
     return res.status(400).json({ message: "Al fields are require" });
   }
 
@@ -21,14 +19,14 @@ const createNewUser = asyncHandler(async (req, res) => {
       message: "Email already exist",
     });
   }
-
+console.log(process.env.SALT)
   const hashedPwd = await bcrypt.hash(password, 10);
 
-  const userObject = { email, password: hashedPwd };
+  const userObject = { email, password: hashedPwd, role, name };
 
   const user = await User.create(userObject);
 
-  if (!user) res.status(200).json({ messssage: `Invalid user data recevied` });
+  if (!user) res.status(400).json({ messssage: `Invalid user data recevied` });
 
   res.status(201).json({ messssage: `New user ${email} created` });
 });
@@ -88,10 +86,9 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getAllUser,
+ 
   createNewUser,
   updateUser,
   deleteUser,
-  uploadImage,
-  getImage,
+
 };
