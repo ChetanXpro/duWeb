@@ -5,7 +5,7 @@ const schema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       require: true,
-      ref: "Colection",
+      ref: "User",
     },
     name: {
       type: String,
@@ -24,4 +24,4 @@ const schema = new mongoose.Schema(
 
 
 
-module.exports = mongoose.model("Note", schema);
+module.exports = mongoose.model("Colection", schema);
