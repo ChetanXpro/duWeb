@@ -16,13 +16,11 @@ const schema = new mongoose.Schema(
 
       require: true,
     },
-    roles: [
-      {
-        type: String,
-
-        default: "User",
-      },
-    ],
+    roles: {
+      type: String,
+      enum: ["student", "teacher", "other"],
+      default: "student",
+    },
     active: {
       type: Boolean,
       default: true,
