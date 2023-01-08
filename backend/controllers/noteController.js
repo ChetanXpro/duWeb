@@ -24,6 +24,8 @@ const createNewNote = asyncHandler(async (req, res) => {
     user: req._id,
     title: dummy.collectionName,
   });
+
+  Collection.updateOne({ user:req._id });
 });
 
 const updateNote = asyncHandler(async (req, res) => {});
