@@ -7,21 +7,14 @@ const schema = new mongoose.Schema(
       require: true,
       ref: "User",
     },
-    name: {
+    title: {
       type: String,
       require: true,
     },
-    url: {
-      type: String,
-      require: true,
-    },
-  
   },
   {
     timestamps: true,
   }
 );
-
-
 
 module.exports = mongoose.model("Colection", schema);
