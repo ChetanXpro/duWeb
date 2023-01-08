@@ -21,7 +21,8 @@ const createNewNote = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Collection already exist" });
 
   await Collection.create({
-    user,
+    user: req._id,
+    title: dummy.collectionName,
   });
 });
 

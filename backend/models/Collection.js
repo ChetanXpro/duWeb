@@ -11,6 +11,9 @@ const schema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    totalNotesInside: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
