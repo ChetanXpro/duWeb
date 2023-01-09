@@ -9,7 +9,6 @@ import PersistLogin from "./components/PersistLogin";
 import Layout from "./components/Layout";
 import Signup from "./components/Signup";
 
-
 function App() {
   return (
     <Routes>
@@ -17,14 +16,14 @@ function App() {
         <Route path="sign_in" element={<Login />} />
         <Route path="sign_up" element={<Signup />} />
         {/* Secure Routes */}
-        <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth />}>
-            <Route element={<Dashboard />}>
-              <Route path="/" element={<Home />} />
+        {/* <Route element={<PersistLogin />}> */}
+        <Route element={<RequireAuth />}>
+          <Route element={<Dashboard />}>
+            <Route path="/" element={<Home />} />
 
-              <Route />
-            </Route>
+            <Route />
           </Route>
+          {/* </Route> */}
         </Route>
         {/* Secure Routes End */}
       </Route>

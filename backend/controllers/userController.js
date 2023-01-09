@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const createNewUser = asyncHandler(async (req, res) => {
   const { role, name, email, password } = req.body;
 
-  if (!name || !password || !email ) {
+  if (!name || !password || !email) {
     return res.status(400).json({ message: "Al fields are require" });
   }
 
@@ -19,7 +19,7 @@ const createNewUser = asyncHandler(async (req, res) => {
       message: "Email already exist",
     });
   }
-console.log(process.env.SALT)
+  console.log(process.env.SALT);
   const hashedPwd = await bcrypt.hash(password, 10);
 
   const userObject = { email, password: hashedPwd, role, name };
@@ -28,7 +28,24 @@ console.log(process.env.SALT)
 
   if (!user) res.status(400).json({ messssage: `Invalid user data recevied` });
 
-  res.status(201).json({ messssage: `New user ${email} created` });
+  res.status(201).json({ message: `New user ${email} created` });
+});
+
+const getUserById = asyncHandler(async (req, res) => {
+  const id = req.id;
+
+  const foundUser = await User.findById(id);
+
+  if (!foundUser)
+    return res
+      .status(400)
+      .json({ success: false, message: "No user found with this id" });
+
+  const userInfo = {
+    email: foundUser.email,
+    name: foundUser.name,
+  };
+  res.status(200).json({ email: foundUser.email, name: foundUser.name });
 });
 
 // @ Update user
@@ -65,8 +82,6 @@ const deleteUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User ID Required" });
   }
 
-
-
   // Does the user exist to delete?
   const user = await User.findById(id).exec();
 
@@ -82,9 +97,8 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
- 
   createNewUser,
   updateUser,
   deleteUser,
-
+  getUserById,
 };

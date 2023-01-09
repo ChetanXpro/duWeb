@@ -1,22 +1,14 @@
-import {
-  Button,
-
-  Flex,
-  Input,
-  
-  Text,
-
-} from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { login } from "../Api/api";
 
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 // import { Backdrop, Modal } from "@mui/material";
 import jwtDecode from "jwt-decode";
-import { useToast } from '@chakra-ui/react'
+import { useToast } from "@chakra-ui/react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const from = location?.state?.from?.pathname || "/";
@@ -24,45 +16,47 @@ const Login = () => {
   const { setAuth, setUser } = useAuth();
   const [success, setSuccess] = useState(false);
   const [password, setPassword] = useState("");
-  const toast = useToast({position:'top'})
+  const toast = useToast({ position: "top" });
 
-  // const navigate = Navigate()
+ 
 
   const queryClient = useQueryClient();
 
   const { isLoading, isError, error, mutate } = useMutation(login, {
     onSuccess: (data) => {
-     
-
-
       toast({
-        title: 'Link send to your mail',
-       
-        status: 'success',
+        title: "Logined Successfuly",
+
+        status: "success",
         duration: 5000,
         isClosable: true,
-      })
-
-      setAuth(data);
-      setSuccess(true);
+      });
+      const token = data?.accessToken;
+      localStorage.setItem("jwt", token);
       
+
+      // setAuth(data);
+      setSuccess(true);
+
+      navigate('/')
+
+
     },
     onError: () => {
       console.log("error" + error);
     },
   });
- 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
       email,
+      password,
     };
     mutate(payload);
   };
   return (
     <Flex h="100vh" bg={"#2b2b2b"} justifyContent="center">
-     
       <Flex
         marginX="6"
         marginY={"6"}
@@ -100,6 +94,16 @@ const Login = () => {
               placeholder="Enter your email"
             />
           </FormControl>
+          <FormControl mb={"4"} isInvalid={false}>
+            <Input
+              type={"password"}
+              h="12"
+              color={"whiteAlpha.900"}
+              autoComplete="true"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="password"
+            />
+          </FormControl>
 
           <Button
             isLoading={isLoading}
@@ -110,13 +114,10 @@ const Login = () => {
             mt={"2"}
             onClick={handleSubmit}
           >
-           {success ? 'Please check your email': 'Sign up / Login'} 
+            {success ? "Logined Successfuly" : "Login"}
           </Button>
-          
         </form>
-        <div>
-        
-        </div>
+        <div></div>
         {/* <Flex mt={'4'} justifyContent='center'>
 
         <span style={{textAlign:'center',marginRight:'6px',color:'wheat'}}>Don't have an account ? </span>
