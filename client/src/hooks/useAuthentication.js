@@ -12,13 +12,13 @@ const useAuthentication = () => {
 
   console.log(isLogin);
 
-  useEffect(() => {
+  // useEffect(() => {
     if (localStorage.getItem("jwt")) {
       setIsLoggedIn(true);
+      const { data } = useQuery("user", getUser);
+      console.log(data);
     }
-    const { data } = useQuery("user", getUser);
-    console.log(data);
-  }, [isLoggedIn]);
+  // }, [isLoggedIn]);
 
   return { isLogin };
 };

@@ -4,10 +4,12 @@ import Home from "../components/Home";
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route index element={<Home />} />
-    </Routes>
+    <Dashboard>
+      <Routes>
+        <Route index element={<Home />} />
+        <div>hiiii</div>
+      </Routes>
+    </Dashboard>
   );
 };
 

@@ -11,7 +11,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 export const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
+  <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <ChakraProvider>
@@ -20,5 +20,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </BrowserRouter>
     <ReactQueryDevtools initialIsOpen />
   </QueryClientProvider>
-  // </React.StrictMode>
+  </React.StrictMode>
 );
