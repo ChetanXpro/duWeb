@@ -13,7 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const { setAuth, setUser } = useAuth();
+  // const { setAuth, setUser } = useAuth();
   const [success, setSuccess] = useState(false);
   const [password, setPassword] = useState("");
   const toast = useToast({ position: "top" });

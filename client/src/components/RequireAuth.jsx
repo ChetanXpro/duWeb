@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Navigate,
-  Outlet,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import jwtDecode from "jwt-decode";
+import { Navigate, Outlet } from "react-router-dom";
+
 import useAuthentication from "../hooks/useAuthentication";
 
 const RequireAuth = () => {

@@ -1,18 +1,26 @@
 import { useAtom } from "jotai";
 import { isLoggedInAtom, user } from "../atoms/status";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+import { getUser } from "../Api/api";
+import { useEffect } from "react";
 
 const useAuthentication = () => {
   const [userData, setUserData] = useAtom(user);
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
 
-  if (localStorage.getItem("jwt")) {
-    setIsLoggedIn(true);
-  }
+  const isLogin = !!localStorage.getItem("jwt");
 
-  useEffect(() => {}, [isLoggedIn]);
+  console.log(isLogin);
 
-  return { isLoggedIn };
+  useEffect(() => {
+    if (localStorage.getItem("jwt")) {
+      setIsLoggedIn(true);
+    }
+    const { data } = useQuery("user", getUser);
+    console.log(data);
+  }, [isLoggedIn]);
+
+  return { isLogin };
 };
 
 export default useAuthentication;

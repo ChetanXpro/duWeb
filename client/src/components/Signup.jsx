@@ -5,14 +5,14 @@ import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { login, signup } from "../Api/api";
 
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import { useToast } from '@chakra-ui/react'
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  // const { setAuth } = useAuth();
   const [success,setSuccess] = useState(false)
   const [password, setPassword] = useState("");
   // const navigate = Navigate()
