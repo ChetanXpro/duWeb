@@ -5,14 +5,14 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 
 const login = asyncHandler(async (req, res) => {
-  const cookies = req.cookies
+  const cookies = req.cookies;
 
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     res.status(400).json({ message: "All field are required" });
   }
 
-  const foundUser = await User.findOne({ username }).exec();
+  const foundUser = await User.findOne({ email }).exec();
 
   if (!foundUser || !foundUser.active) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -21,12 +21,11 @@ const login = asyncHandler(async (req, res) => {
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) return res.status(401).json({ message: "Unauthorized" });
- 
 
   const accessToken = jwt.sign(
     {
       UserInfo: {
-        username: foundUser.username,
+        email: foundUser.email,
         roles: foundUser.roles,
       },
     },
@@ -42,89 +41,77 @@ const login = asyncHandler(async (req, res) => {
     { expiresIn: "24h" }
   );
 
-
-  if(cookies?.jwt){
-    
-
-    res.clearCookie('jwt',{httpOnly:true,sameSite:'none',secure:true})
+  if (cookies?.jwt) {
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
   }
 
-  
-
   res.cookie("jwt", newRefreshToken, {
-    path:'/',    
+    path: "/",
     maxAge: 100000,
     httpOnly: true,
-    sameSite:'lax'
-  
+    sameSite: "lax",
   });
 
-  
   res.json({ accessToken });
-console.log('Logined')
-  
+  console.log("Logined");
 });
 
 // !Refresh
 const refresh = asyncHandler(async (req, res) => {
- 
-  const cookies = req.cookies
+  const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.status(401).json({ message: 'Unauthorized' })
+  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
 
-  const refreshToken = cookies.jwt
+  const refreshToken = cookies.jwt;
 
   jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      asyncHandler(async (err, decoded) => {
-          if (err) return res.status(403).json({ message: 'Forbidden' })
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    asyncHandler(async (err, decoded) => {
+      if (err) return res.status(403).json({ message: "Forbidden" });
 
-          const foundUser = await User.findOne({ username: decoded.username }).exec()
+      const foundUser = await User.findOne({
+        username: decoded.username,
+      }).exec();
 
-          if (!foundUser) return res.status(401).json({ message: 'Unauthorized' })
+      if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
 
-          const accessToken = jwt.sign(
-              {
-                  "UserInfo": {
-                      "username": foundUser.username,
-                      "roles": foundUser.roles
-                  }
-              },
-              process.env.ACCESS_TOKEN_SECRET,
-              { expiresIn: '15m' }
-          )
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            username: foundUser.username,
+            roles: foundUser.roles,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: "15m" }
+      );
 
-          res.json({ accessToken })
-      })
-  )
+      res.json({ accessToken });
+    })
+  );
 });
-
-
 
 //Logout
 
- 
 const logout = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
-  const refreshToken = cookies?.jwt
-  console.log(`Cookie logout ${refreshToken}`)
+  const refreshToken = cookies?.jwt;
+  console.log(`Cookie logout ${refreshToken}`);
 
   if (!refreshToken) return res.sendStatus(204);
 
-  const foundUser = await User.findOne({refresh:refreshToken})
+  const foundUser = await User.findOne({ refresh: refreshToken });
 
-  if(!foundUser){
+  if (!foundUser) {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-
   }
 
-  foundUser.refresh = foundUser.refresh.filter(r=> r !== refreshToken)
+  foundUser.refresh = foundUser.refresh.filter((r) => r !== refreshToken);
   await foundUser.save();
 
-  res.clearCookie('jwt',{httpOnly:true,sameSite:'none',secure:true})
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
 
- 
   res.status(204).json({ message: "Logout" });
 });
 

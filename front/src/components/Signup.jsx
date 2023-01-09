@@ -13,7 +13,7 @@ const Signup = () => {
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const { setAuth } = useAuth();
-  const [success,setSuccess] = useState<boolean>(false)
+  const [success,setSuccess] = useState(false)
   const [password, setPassword] = useState("");
   // const navigate = Navigate()
   const toast = useToast({position:'top'})
@@ -32,7 +32,7 @@ const Signup = () => {
         duration: 2000,
         isClosable: true,
       })
-   console.log(data)
+
       setSuccess(true)
       setTimeout(() => {
         
@@ -44,7 +44,7 @@ const Signup = () => {
     },
   });
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
       username: email,
@@ -81,7 +81,7 @@ const Signup = () => {
               h="10"
               color={"whiteAlpha.900"}
               autoComplete="true"
-              onChange={(e: any) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="email"
             />
             {/* {true && (

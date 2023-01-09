@@ -1,49 +1,50 @@
-import { Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
-import { login } from "../Api/api";
+import { login, signup } from "../Api/api";
 
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import jwtDecode from "jwt-decode";
+import { useToast } from '@chakra-ui/react'
 
-
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const { setAuth ,setUser} = useAuth();
-  const [success,setSuccess] = useState<boolean>(false)
+  const { setAuth } = useAuth();
+  const [success,setSuccess] = useState(false)
   const [password, setPassword] = useState("");
- 
   // const navigate = Navigate()
-
+  const toast = useToast({position:'top'})
   const queryClient = useQueryClient();
 
 
-  const { isLoading, isError, error, mutate } = useMutation(login, {
+  const { isLoading, isError, error, mutate } = useMutation(signup, {
     onSuccess: (data) => {
       // Here we can invalidate a cache and refetch a query api again
       //queryClient.invalidateQueries('todos')
-    
-      localStorage.setItem('jwt',data.accessToken)
-      setAuth(data);
-      setSuccess(true)
-      const userDetails = jwtDecode(data?.accessToken)
-      setUser(userDetails)
      
+      toast({
+        title: 'Account created',
+       
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+
+      setSuccess(true)
       setTimeout(() => {
         
-        navigate(from, { replace: true });
-      }, 300);
+        navigate('/sign_in');
+      }, 400);
     },
     onError: () => {
       console.log("error");
     },
   });
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
       username: email,
@@ -52,7 +53,7 @@ const Login = () => {
     mutate(payload);
   };
   return (
-    <Flex h="100vh"  bg={"#2b2b2b"} justifyContent="center">
+    <Flex h="100vh" bg={"#2b2b2b"} justifyContent="center">
       <Flex
         marginX="6"
         marginY={"6"}
@@ -60,10 +61,9 @@ const Login = () => {
         flexDirection={"column"}
         mt={'36'}
       >
-  
         <form onSubmit={handleSubmit}>
          
-        
+
           <Text
             textAlign={"center"}
             color="white"
@@ -71,11 +71,9 @@ const Login = () => {
             fontSize="2xl"
             mb={"6"}
           >
-            Login to your account
+            Create your account
           </Text>
-          <p style={{textAlign:'center',marginBottom:'12px',marginTop:'4px',color:'red'}} >
-          {isError ? `${error?.data?.message}`:'' }
-              </p>
+         
           <FormControl mb={"4"} isInvalid={false}>
           
             <Input
@@ -83,7 +81,7 @@ const Login = () => {
               h="10"
               color={"whiteAlpha.900"}
               autoComplete="true"
-              onChange={(e: any) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="email"
             />
             {/* {true && (
@@ -104,25 +102,26 @@ const Login = () => {
         <FormErrorMessage>Password should be long .</FormErrorMessage>
       )} */}
           </FormControl>
-         
-          
+          <p style={{height:'5px',marginBottom:'12px',marginTop:'6px',color:'red'}} >
+          {isError ? `${error?.data?.message}`:'' }
+              </p>
 
           <Button
             isLoading={isLoading}
-            loadingText="Signing in"
+            loadingText="Creating account"
             width={"full"}
             h='12'
             colorScheme={`${success ? 'green' : 'teal'}`}
-            mt={"8"}
+            mt={"4"}
             onClick={handleSubmit}
           >
-           {success ? 'Succesfully logined' :'Sign in'}
+           {success ? 'Account Created' :'Sign up'}
           </Button>
         </form>
         <Flex mt={'4'} justifyContent='center'>
 
-        <span style={{textAlign:'center',marginRight:'6px',color:'wheat'}}>Don't have an account ? </span>
-        <Link className="text-blue-400" to={'/sign_up'}>Sign up</Link>
+        <span style={{textAlign:'center',marginRight:'6px',color:'wheat'}}>Already have an account ? </span>
+        <Link className="text-blue-400" to={'/sign_in'}>Sign in</Link>
         </Flex>
 
       </Flex>
@@ -130,4 +129,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

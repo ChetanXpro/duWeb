@@ -3,27 +3,27 @@ import { apiPrivateInstance } from "../Api/api";
 import useAuth from "./useAuth";
 import useRefreshToken from "./useRefreshToken";
 
-
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
-const token = auth?.accessToken
-  // useEffect(() => {
+
+  const token = auth?.accessToken;
+
+  useEffect(() => {
     const requestIntercept = apiPrivateInstance.interceptors.request.use(
-      (config:any) => {
-       
+      (config) => {
         if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${token}`;
         }
 
         return config;
       },
-      (error:any) => Promise.reject(error)
+      (error) => Promise.reject(error)
     );
 
     const responseIntercept = apiPrivateInstance.interceptors.response.use(
-      (response:any) => response,
-      async (error:any) => {
+      (response) => response,
+      async (error) => {
         const prevRequest = error?.config;
 
         if (error?.response?.status === 403 && !prevRequest?.sent) {
@@ -36,11 +36,11 @@ const token = auth?.accessToken
       }
     );
 
-  //   return () => {
-  //     apiPrivateInstance.interceptors.request.eject(requestIntercept);
-  //     apiPrivateInstance.interceptors.response.eject(responseIntercept);
-  //   };
-  // }, [auth, refresh]);
+    return () => {
+      apiPrivateInstance.interceptors.request.eject(requestIntercept);
+      apiPrivateInstance.interceptors.response.eject(responseIntercept);
+    };
+  }, [auth, refresh]);
 
   return apiPrivateInstance;
 };

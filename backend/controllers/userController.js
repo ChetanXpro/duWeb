@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const createNewUser = asyncHandler(async (req, res) => {
   const { role, name, email, password } = req.body;
 
-  if (!name || !password || !email || !role) {
+  if (!name || !password || !email ) {
     return res.status(400).json({ message: "Al fields are require" });
   }
 
