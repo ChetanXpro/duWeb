@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { BlobServiceClient } from "@azure/storage-blob";
 import { nanoid } from "nanoid";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-const blobServiceClient = new BlobServiceClient(
-  "https://duweb.blob.core.windows.net/?sv=2021-06-08&ss=b&srt=sco&sp=rwdlaciytfx&se=2023-01-11T00:38:59Z&st=2023-01-10T16:38:59Z&spr=https,http&sig=YYOoOyFgdei7OYgiaR%2FMDVmHFd1Z0rQtSeqN5L251Uo%3D"
-);
+const blobServiceClient = new BlobServiceClient(import.meta.env.VITE_SERVICE);
 const containerClient = blobServiceClient.getContainerClient("pdf");
 const Upload = () => {
   const apiPrivateInstance = useAxiosPrivate();
