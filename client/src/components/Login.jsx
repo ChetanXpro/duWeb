@@ -3,44 +3,49 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { login } from "../Api/api";
+import { useAtom } from "jotai";
 
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 // import useAuth from "../hooks/useAuth";
 // import { Backdrop, Modal } from "@mui/material";
 import jwtDecode from "jwt-decode";
 import { useToast } from "@chakra-ui/react";
+import { user } from "../atoms/status";
 const Login = () => {
   const [email, setEmail] = useState("");
-  const from = location?.state?.from?.pathname || "/";
+  const from = location?.state?.from?.pathname || "/home";
   const navigate = useNavigate();
   // const { setAuth, setUser } = useAuth();
   const [success, setSuccess] = useState(false);
   const [password, setPassword] = useState("");
   const toast = useToast({ position: "top" });
-
- 
+  const [userData, setUserData] = useAtom(user);
 
   const queryClient = useQueryClient();
-
+  const loc = useLocation();
   const { isLoading, isError, error, mutate } = useMutation(login, {
     onSuccess: (data) => {
       toast({
         title: "Logined Successfuly",
 
         status: "success",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
       });
       const token = data?.accessToken;
       localStorage.setItem("jwt", token);
+
+      setUserData({
+        email: data.email,
+        name: data.name,
+      });
+
       
 
-      // setAuth(data);
+    
       setSuccess(true);
 
-      navigate('/')
-
-
+      navigate("/");
     },
     onError: () => {
       console.log("error" + error);
@@ -87,7 +92,7 @@ const Login = () => {
           <FormControl mb={"4"} isInvalid={false}>
             <Input
               type={"email"}
-              h="12"
+              h="10"
               color={"whiteAlpha.900"}
               autoComplete="true"
               onChange={(e) => setEmail(e.target.value)}
@@ -97,7 +102,7 @@ const Login = () => {
           <FormControl mb={"4"} isInvalid={false}>
             <Input
               type={"password"}
-              h="12"
+              h="10"
               color={"whiteAlpha.900"}
               autoComplete="true"
               onChange={(e) => setPassword(e.target.value)}
@@ -109,7 +114,7 @@ const Login = () => {
             isLoading={isLoading}
             loadingText="Sending mail"
             width={"full"}
-            h="12"
+            h="10"
             colorScheme={`${success ? "green" : "teal"}`}
             mt={"2"}
             onClick={handleSubmit}
@@ -118,11 +123,11 @@ const Login = () => {
           </Button>
         </form>
         <div></div>
-        {/* <Flex mt={'4'} justifyContent='center'>
+        <Flex mt={'4'} justifyContent='center'>
 
         <span style={{textAlign:'center',marginRight:'6px',color:'wheat'}}>Don't have an account ? </span>
-        <Link className="text-blue-400" to={'/sign_up'}>Sign up / Login</Link>
-        </Flex> */}
+        <Link className="text-blue-400" to={'/sign_up'}>Sign up</Link>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -49,7 +49,7 @@ const login = asyncHandler(async (req, res) => {
     sameSite: "lax",
   });
 
-  res.json({ accessToken });
+  res.json({ email: foundUser.email, name: foundUser.name, accessToken });
   console.log("Logined");
 });
 

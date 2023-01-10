@@ -4,12 +4,14 @@ import Home from "../components/Home";
 
 const AppRoutes = () => {
   return (
-    <Dashboard>
-      <Routes>
+    // <Dashboard>
+    <Routes>
+      <Route path="/home" element={<Dashboard />}>
         <Route index element={<Home />} />
-        <div>hiiii</div>
-      </Routes>
-    </Dashboard>
+      </Route>
+      <Route path="*" element={<Navigate replace to="/home" />} />
+    </Routes>
+    // </Dashboard>
   );
 };
 

@@ -10,7 +10,7 @@ const Dashboard = () => {
         <Outlet />
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

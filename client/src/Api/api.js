@@ -10,11 +10,12 @@ export const apiInstance = axios.create({
   withCredentials: true,
 });
 const accessToken = localStorage.getItem("jwt");
+
 export const apiPrivateInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
-    Authorization: `Bearer ${accessToken}`,
+    // Authorization: `Bearer ${accessToken}`,
     "Content-type": "application/json",
   },
   withCredentials: true,

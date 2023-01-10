@@ -1,26 +1,37 @@
 import { useAtom } from "jotai";
 import { isLoggedInAtom, user } from "../atoms/status";
-import { useQuery } from "react-query";
-import { getUser } from "../Api/api";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import useAxiosPrivate from "./useAxiosPrivate";
 
 const useAuthentication = () => {
   const [userData, setUserData] = useAtom(user);
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  // setIsLoggedIn(false);
+  const path = useLocation().pathname;
+  console.log(userData);
+  const apiPrivateInstance = useAxiosPrivate();
 
   const isLogin = !!localStorage.getItem("jwt");
 
-  console.log(isLogin);
+  useEffect(() => {
+    const fetchuser = async () => {
+      try {
+        const request = await apiPrivateInstance.get("/user/getUser");
 
-  // useEffect(() => {
-    if (localStorage.getItem("jwt")) {
-      setIsLoggedIn(true);
-      const { data } = useQuery("user", getUser);
-      console.log(data);
-    }
-  // }, [isLoggedIn]);
+        setUserData(request?.data);
+      } catch (err) {
+        const error = err;
+        return Promise.reject(error.response);
+      }
+    };
 
-  return { isLogin };
+    fetchuser();
+
+    setIsLoggedIn(true);
+  }, [path, isLogin]);
+
+  return { isLogin, isLoggedIn };
 };
 
 export default useAuthentication;

@@ -8,10 +8,8 @@ import Login from "../components/Login";
 const AuthRoutes = () => {
   return (
     <Routes>
-    
-      <Route path="sign_in" element={<Login />} />
-      <Route path="sign_up" element={<Signup />} />
-
+      <Route path="/sign_in" element={<Login />} />
+      <Route path="/sign_up" element={<Signup />} />
       <Route path="*" element={<Navigate replace to="/sign_in" />} />
     </Routes>
   );
