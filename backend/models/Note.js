@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema(
   {
-    user: {
+    collectionID: {
       type: mongoose.Schema.Types.ObjectId,
       require: true,
-      ref: "Colection",
+      ref: "Collection",
     },
     name: {
       type: String,
@@ -15,13 +15,10 @@ const schema = new mongoose.Schema(
       type: String,
       require: true,
     },
-  
   },
   {
     timestamps: true,
   }
 );
-
-
 
 module.exports = mongoose.model("Note", schema);

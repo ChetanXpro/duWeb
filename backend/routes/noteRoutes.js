@@ -6,7 +6,8 @@ const verifyJWT = require("../middleware/verifyJWT");
 router.use(verifyJWT);
 
 router.get("/", noteController.getAllNotes);
-router.post("/", noteController.createNewNote);
+router.post("/", noteController.createNotes);
+router.post("/collection", noteController.createCollection);
 router.patch("/", noteController.updateNote);
 router.delete("/", noteController.deleteNote);
 
