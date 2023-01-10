@@ -9,21 +9,27 @@ import Setting from "./components/Setting/Setting";
 import Profile from "./components/Profile/Profile";
 import Dashboard from "./components/Dashboard/Dashboard";
 import RequireAuth from "./components/RequireAuth";
+import Layout from "./components/Layout";
+import Upload from "./components/Upload/Upload";
+
 function App() {
   return (
     <Routes>
-      {/* // <Route path="/" element={<Layout />}> */}
-      <Route path="/sign_in" element={<Login />} />
-      <Route path="/sign_up" element={<Signup />} />
-
-      <Route element={<RequireAuth />}>
-        <Route path="/" element={<Dashboard />}>
-          <Route index element={<Home />} />
-          <Route path="/setting" element={<Setting />} />
+      //{" "}
+      <Route path="/" element={<Layout />}>
+        <Route path="/sign_in" element={<Login />} />
+        <Route path="/sign_up" element={<Signup />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<Dashboard />}>
+            <Route index element={<Home />} />
+            <Route path="setting" element={<Setting />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="upload" element={<Upload />} />
+          </Route>
         </Route>
+        <Route path="*" element={<Navigate replace to="/sign_in" />} />
+        //{" "}
       </Route>
-      <Route path="*" element={<Navigate replace to="/sign_in" />} />
-      {/* // </Route> */}
     </Routes>
   );
 }
