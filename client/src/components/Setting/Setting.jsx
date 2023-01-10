@@ -2,7 +2,9 @@ import React from 'react'
 
 const Setting = () => {
   return (
-    <div>Setting</div>
+    <div>Setting
+      <input type="email" name="" id="" />
+    </div>
   )
 }
 

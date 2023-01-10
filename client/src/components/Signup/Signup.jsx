@@ -2,66 +2,63 @@ import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
-import { login } from "../Api/api";
-import { useAtom } from "jotai";
+import { login, signup } from "../../Api/api";
 
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 // import useAuth from "../hooks/useAuth";
-// import { Backdrop, Modal } from "@mui/material";
-import jwtDecode from "jwt-decode";
 import { useToast } from "@chakra-ui/react";
-import { user } from "../atoms/status";
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const from = location?.state?.from?.pathname || "/home";
-  const navigate = useNavigate();
-  // const { setAuth, setUser } = useAuth();
-  const [success, setSuccess] = useState(false);
-  const [password, setPassword] = useState("");
-  const toast = useToast({ position: "top" });
-  const [userData, setUserData] = useAtom(user);
+import { useEffect } from "react";
 
-  const queryClient = useQueryClient();
-  const loc = useLocation();
-  const { isLoading, isError, error, mutate } = useMutation(login, {
+const Signup = () => {
+  const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+  const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [validName,setValidName] = useState(false)
+  const [success, setSuccess] = useState(false);
+  const from = location?.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const toast = useToast({ position: "top" });
+  
+console.log(validName)
+  useEffect(() => {
+    setValidName(PWD_REGEX.test(password));
+  }, [password]);
+
+
+
+  const { isLoading, isError, error, mutate } = useMutation(signup, {
     onSuccess: (data) => {
       toast({
-        title: "Logined Successfuly",
+        title: "Account created",
 
         status: "success",
         duration: 2000,
         isClosable: true,
       });
-      const token = data?.accessToken;
-      localStorage.setItem("jwt", token);
 
-      setUserData({
-        email: data.email,
-        name: data.name,
-      });
-
-      
-
-    
       setSuccess(true);
-
-      navigate("/");
+      setTimeout(() => {
+        navigate("/sign_in");
+      }, 400);
     },
     onError: () => {
-      console.log("error" + error);
+      console.log("error");
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
-      email,
+      username: email,
       password,
     };
     mutate(payload);
   };
   return (
     <Flex h="100vh" bg={"#2b2b2b"} justifyContent="center">
+     
       <Flex
         marginX="6"
         marginY={"6"}
@@ -77,18 +74,20 @@ const Login = () => {
             fontSize="2xl"
             mb={"6"}
           >
-            Login to your account
+            Create your account
           </Text>
-          <p
-            style={{
-              textAlign: "center",
-              marginBottom: "12px",
-              marginTop: "4px",
-              color: "red",
-            }}
-          >
-            {isError ? `${error?.data?.message}` : ""}
-          </p>
+      
+
+          <FormControl mb={"4"} isInvalid={validName}>
+            <Input
+              type={"name"}
+              h="10"
+              color={"whiteAlpha.900"}
+              autoComplete="true"
+              onChange={(e) => setName(e.target.value)}
+              placeholder="name"
+            />
+          </FormControl>
           <FormControl mb={"4"} isInvalid={false}>
             <Input
               type={"email"}
@@ -96,41 +95,56 @@ const Login = () => {
               color={"whiteAlpha.900"}
               autoComplete="true"
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="email"
             />
           </FormControl>
-          <FormControl mb={"4"} isInvalid={false}>
+          <FormControl isInvalid={false}>
             <Input
               type={"password"}
-              h="10"
-              color={"whiteAlpha.900"}
+              h={"10"}
               autoComplete="true"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
+              color={"whiteAlpha.900"}
               placeholder="password"
             />
           </FormControl>
+          <p
+            style={{
+              height: "5px",
+              marginBottom: "12px",
+              marginTop: "6px",
+              color: "red",
+            }}
+          >
+            {isError ? `${error?.data?.message}` : ""}
+          </p>
 
           <Button
             isLoading={isLoading}
-            loadingText="Sending mail"
+            loadingText="Creating account"
             width={"full"}
-            h="10"
+            h="12"
             colorScheme={`${success ? "green" : "teal"}`}
-            mt={"2"}
+            mt={"4"}
             onClick={handleSubmit}
           >
-            {success ? "Logined Successfuly" : "Login"}
+            {success ? "Account Created" : "Sign up"}
           </Button>
         </form>
-        <div></div>
-        <Flex mt={'4'} justifyContent='center'>
-
-        <span style={{textAlign:'center',marginRight:'6px',color:'wheat'}}>Don't have an account ? </span>
-        <Link className="text-blue-400" to={'/sign_up'}>Sign up</Link>
+        <Flex mt={"4"} justifyContent="center">
+          <span
+            style={{ textAlign: "center", marginRight: "6px", color: "wheat" }}
+          >
+            Already have an account ?{" "}
+          </span>
+          <Link className="text-blue-400" to={"/sign_in"}>
+            Sign in
+          </Link>
         </Flex>
       </Flex>
     </Flex>
   );
 };
 
-export default Login;
+export default Signup;

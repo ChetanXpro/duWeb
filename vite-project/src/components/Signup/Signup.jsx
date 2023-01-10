@@ -2,28 +2,34 @@ import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
-import { login, signup } from "../Api/api";
+import { login, signup } from "../../Api/api";
 
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 // import useAuth from "../hooks/useAuth";
 import { useToast } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 const Signup = () => {
+  const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+  const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [validName,setValidName] = useState(false)
+  const [success, setSuccess] = useState(false);
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  // const { setAuth } = useAuth();
-  const [success, setSuccess] = useState(false);
-  const [password, setPassword] = useState("");
-  // const navigate = Navigate()
   const toast = useToast({ position: "top" });
-  const queryClient = useQueryClient();
+  
+console.log(validName)
+  useEffect(() => {
+    setValidName(PWD_REGEX.test(password));
+  }, [password]);
+
+
 
   const { isLoading, isError, error, mutate } = useMutation(signup, {
     onSuccess: (data) => {
-      // Here we can invalidate a cache and refetch a query api again
-      //queryClient.invalidateQueries('todos')
-
       toast({
         title: "Account created",
 
@@ -52,6 +58,7 @@ const Signup = () => {
   };
   return (
     <Flex h="100vh" bg={"#2b2b2b"} justifyContent="center">
+     
       <Flex
         marginX="6"
         marginY={"6"}
@@ -69,16 +76,19 @@ const Signup = () => {
           >
             Create your account
           </Text>
+      
 
-          <FormControl mb={"4"} isInvalid={false}>
+          <FormControl mb={"4"} isInvalid={validName}>
             <Input
-              type={"email"}
+              type={"name"}
               h="10"
               color={"whiteAlpha.900"}
               autoComplete="true"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email"
+              onChange={(e) => setName(e.target.value)}
+              placeholder="name"
             />
+          </FormControl>
+          <FormControl mb={"4"} isInvalid={false}>
             <Input
               type={"email"}
               h="10"

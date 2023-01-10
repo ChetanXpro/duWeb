@@ -2,7 +2,7 @@ import { Avatar } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { user } from "../atoms/status";
+import { user } from "../../atoms/status";
 
 const Header = () => {
   // console.log(user);

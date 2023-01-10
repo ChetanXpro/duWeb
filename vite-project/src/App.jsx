@@ -9,21 +9,23 @@ import Setting from "./components/Setting/Setting";
 import Profile from "./components/Profile/Profile";
 import Dashboard from "./components/Dashboard/Dashboard";
 import RequireAuth from "./components/RequireAuth";
+import Layout from "./components/Layout";
 function App() {
   return (
     <Routes>
-      {/* // <Route path="/" element={<Layout />}> */}
-      <Route path="/sign_in" element={<Login />} />
-      <Route path="/sign_up" element={<Signup />} />
-
-      <Route element={<RequireAuth />}>
-        <Route path="/" element={<Dashboard />}>
-          <Route index element={<Home />} />
-          <Route path="/setting" element={<Setting />} />
+      //{" "}
+      <Route path="/" element={<Layout />}>
+        <Route path="/sign_in" element={<Login />} />
+        <Route path="/sign_up" element={<Signup />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<Dashboard />}>
+            <Route index element={<Home />} />
+            <Route path="/setting" element={<Setting />} />
+          </Route>
         </Route>
+        <Route path="*" element={<Navigate replace to="/sign_in" />} />
+        //{" "}
       </Route>
-      <Route path="*" element={<Navigate replace to="/sign_in" />} />
-      {/* // </Route> */}
     </Routes>
   );
 }
