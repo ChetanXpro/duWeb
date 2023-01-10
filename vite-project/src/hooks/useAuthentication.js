@@ -9,7 +9,7 @@ const useAuthentication = () => {
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
   // setIsLoggedIn(false);
   const path = useLocation().pathname;
-  console.log(userData);
+ 
   const apiPrivateInstance = useAxiosPrivate();
 
   const isLogin = !!localStorage.getItem("jwt");

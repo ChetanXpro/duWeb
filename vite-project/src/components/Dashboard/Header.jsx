@@ -14,6 +14,12 @@ const Header = () => {
         <Link to={"/"} className="text-black">
           Home
         </Link>
+        <Link to={"/profile"} className="text-black ml-4">
+          Profile
+        </Link>
+        <Link to={"/upload"} className="text-black ml-4">
+          Upload
+        </Link>
         <Link to={"/setting"} className="text-black  ml-4">
           Setting
         </Link>

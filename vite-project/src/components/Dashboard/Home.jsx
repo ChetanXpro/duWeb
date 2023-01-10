@@ -9,7 +9,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className="flex flex-col items-center gap-3 mt-20">
+    <div className="flex flex-col items-center gap-3 ">
       <h2>Login successfuly </h2>
     </div>
   );
