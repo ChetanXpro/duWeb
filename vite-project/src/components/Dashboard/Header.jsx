@@ -9,13 +9,20 @@ const Header = () => {
   const [userData, setUser] = useAtom(user);
 
   return (
-    <div className="flex bg-[#05386b] text-white items-center gap-4 p-4 justify-between h-12 w-[100vw]">
-      <Link to={"/"}>Home</Link>
-      <Link to={"/setting"}>Setting</Link>
-
-      <div>
-        <Avatar name={`${userData?.name}`} size={"sm"} />
+    <div className="flex flex-row-reverse bg-red-500  text-white items-center pr-10  p-4 justify-between h-12  w-[100vw-1rem]">
+      <div className="">
+        <Link to={"/"} className="text-black">
+          Home
+        </Link>
+        <Link to={"/setting"} className="text-black  ml-4">
+          Setting
+        </Link>
       </div>
+      <div>logo</div>
+
+      {/* <div>
+        <Avatar name={`${userData?.name}`} size={"sm"} />
+      </div> */}
     </div>
   );
 };
