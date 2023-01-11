@@ -9,7 +9,7 @@ const Header = () => {
   const [userData, setUser] = useAtom(user);
 
   return (
-    <div className="flex flex-row-reverse bg-red-500  text-white items-center pr-10  p-4 justify-between h-12  w-[100vw-1rem]">
+    <div className="flex flex-row-reverse bg-blue-300  text-white items-center pr-10  p-4 justify-between h-12  w-[100vw-1rem]">
       <div className="">
         <Link to={"/"} className="text-black">
           Home

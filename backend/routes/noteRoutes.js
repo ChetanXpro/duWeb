@@ -8,6 +8,7 @@ router.use(verifyJWT);
 router.get("/", noteController.getAllNotes);
 router.post("/", noteController.createNotes);
 router.post("/collection", noteController.createCollection);
+router.get("/collection", noteController.getCollectionList);
 router.patch("/", noteController.updateNote);
 router.delete("/", noteController.deleteNote);
 

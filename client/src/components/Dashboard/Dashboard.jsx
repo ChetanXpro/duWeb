@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
-import Header from "./Header";
+import Navbar from "./Header";
 
 const Dashboard = () => {
   return (
     <>
-      <Header />
-      <div className="h-[calc(100vh-3rem)]">
+      <Navbar />
+      <div className="">
+      {/* <div className="h-[calc(100vh-3rem)]"> */}
         <Outlet />
       </div>
 
