@@ -6,7 +6,7 @@ const Dashboard = () => {
   return (
     <>
       <Header />
-      <div className="h-[calc(100vh-4.5rem)]">
+      <div className="h-[calc(100vh-3rem)]">
         <Outlet />
       </div>
 

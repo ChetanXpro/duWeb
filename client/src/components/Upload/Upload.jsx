@@ -4,6 +4,9 @@ import { nanoid } from "nanoid";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const blobServiceClient = new BlobServiceClient(import.meta.env.VITE_SERVICE);
 const containerClient = blobServiceClient.getContainerClient("pdf");
+import { Button, Input, Select } from "antd";
+import Search from "antd/es/input/Search";
+
 const Upload = () => {
   const apiPrivateInstance = useAxiosPrivate();
   const [files, setFiles] = useState(null);
@@ -55,21 +58,52 @@ const Upload = () => {
     }
   };
 
+  // <input
+  //         accept="image/*,.pdf,.txt,.doc,.docx"
+  //         multiple
+  //         onChange={(e) => {
+  //           setFiles(e.target.files);
+  //         }}
+  //         type="file"
+  //         name=""
+  //         id=""
+  //       />
+  //       <button onClick={uploadFiles}>Upload</button>
+
   return (
-    <div>
-      <div>
-        <input
-          multiple
-          // onChange={handleImageFile}
-          onChange={(e) => {
-            setFiles(e.target.files);
-            // setFile([...getImageFile, e.target.files[0]])
-          }}
-          type="file"
-          name=""
-          id=""
-        />
-        <button onClick={uploadFiles}>Upload</button>
+    <div className="h-full bg-red-400 flex items-center justify-center  ">
+      <div className=" xl:bg-white w-full lg:w-[80%]       flex flex-col items-center justify-center h-full p-10 lg:h-[90%] border border-gray-700  ">
+        <div className="flex gap-20 flex-1 flex-col md:flex-row lg:flex-row xl:flex-row items-center ">
+          <div className="flex flex-col items-center justify-center">
+          <span>Create a folder </span>
+            <Search
+              placeholder="input search text"
+              enterButton="Search"
+              size="medium"
+              loading={false}
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <span>Select a folder </span>
+            <Select
+              showSearch
+              size="medium"
+              style={{ width: 200 }}
+              placeholder="Select folder"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label ?? "").includes(input)
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              options={[]}
+            />
+          </div>
+        </div>
+        <div className="flex flex-1">Upoad file</div>
       </div>
     </div>
   );

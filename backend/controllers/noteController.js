@@ -5,6 +5,9 @@ const asyncHandler = require("express-async-handler");
 
 const getAllNotes = asyncHandler(async (req, res) => {});
 
+
+
+// Create collection
 const createCollection = asyncHandler(async (req, res) => {
   const { collectionName } = req.body;
   if (!collectionName)
@@ -28,6 +31,16 @@ const createCollection = asyncHandler(async (req, res) => {
     .status(200)
     .json({ success: true, message: `${collectionName} collection created` });
 });
+
+const getCollectionList = asyncHandler(async(req,res)=>{
+  
+  const id = req.id;
+
+  if(!id) return res.status(400).json({success:false,})
+})
+
+
+// Create notes
 const createNotes = asyncHandler(async (req, res) => {
   const { collectionName, noteName, url } = req.body;
   if (typeof (collectionName || noteName || url) !== "string")

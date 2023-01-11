@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 // import { getUser } from "../Api/api";
+import img from "../../../public/med.png";
 
 const Home = () => {
   const [data, setData] = useState();
@@ -11,6 +12,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center gap-3 ">
       <h2>Login successfuly </h2>
+      <img src={img} height='40%' width={'40%'} alt="" />
     </div>
   );
 };
