@@ -34,16 +34,20 @@ const Upload = () => {
       });
       console.log(res.data);
       setLoading(false);
+      setCollectionName("");
       toast({
         title: `${collectionName} collection is created`,
         status: "success",
         duration: 2000,
         isClosable: true,
       });
-      setCollectionName("");
     } catch (error) {
       console.log("error", error);
     }
+  };
+  const [isUploadingCompleted, setIsUpoadingCompleted] = useState(false);
+  const setIsUploading = (isCompleted) => {
+    setIsUpoadingCompleted(isCompleted);
   };
 
   const uploadFiles = async () => {
@@ -62,7 +66,7 @@ const Upload = () => {
 
       for (const file of files) {
         const uniqueId = nanoid();
-        // console.log(file);
+
         const nameChanged = new File([file], `${uniqueId}${file.name}`);
 
         const obj = {
@@ -78,6 +82,7 @@ const Upload = () => {
         blockBlobClient
           .uploadBrowserData(nameChanged)
           .then((res) => {
+            console.log(res);
             apiPrivateInstance
               .post("/note", {
                 collectionName,
@@ -86,6 +91,7 @@ const Upload = () => {
               })
               .then((res) => {
                 console.log(res.data);
+                setIsUploading(true);
                 toast({
                   title: "Files Uploaded successfuly",
 
@@ -118,15 +124,16 @@ const Upload = () => {
   };
 
   return (
-    <div className=" bg-red-500  flex items-center h-[calc(100vh)] justify-center  ">
-      <div className=" xl:bg-white w-full lg:w-[80%]       flex flex-col items-center justify-start h-full p-10  border border-gray-700  ">
-        <div className="flex gap-10 lg:gap-20  flex-col  md:flex-row lg:flex-row xl:flex-row items-center ">
+    <div className="   flex items-center h-[calc(100vh)] justify-center  ">
+      <div className=" xl:bg-white w-full lg:w-[80%]       flex flex-col items-center justify-start h-full p-10 border-t-0 border border-gray-200  ">
+        <div className="flex gap-10 lg:gap-20 lg:mt-10  flex-col  md:flex-row lg:flex-row xl:flex-row items-center ">
           <div className="flex flex-col items-center justify-center">
-            <span>Create a folder </span>
+            <span className="text-white">Create a Collection </span>
             <Search
               placeholder="Collection name"
               enterButton="Create"
               size="medium"
+              className="bg-blue-400 rounded"
               onChange={(e) => {
                 setCollectionName(e.target.value);
               }}
@@ -137,7 +144,7 @@ const Upload = () => {
             />
           </div>
           <div className="flex flex-col items-center">
-            <span>Select a folder </span>
+            <span className="text-white">Select a Collection </span>
             <Select
               showSearch
               onFocus={() => {
@@ -150,14 +157,9 @@ const Upload = () => {
               style={{ width: 200 }}
               placeholder="Select folder"
               optionFilterProp="children"
-              filterOption={(input, option) =>
-                (option?.label ?? "").includes(input)
-              }
-              filterSort={(optionA, optionB) =>
-                (optionA?.label ?? "")
-                  .toLowerCase()
-                  .localeCompare((optionB?.label ?? "").toLowerCase())
-              }
+              filterOption={(input, option) => {
+                return option.label.includes(input);
+              }}
               options={fetchedCollection}
             />
           </div>
@@ -165,7 +167,7 @@ const Upload = () => {
         <Divider className="bg-gray-200" />
         <div className="flex flex-col mt-10  ">
           <div className="flex  gap-6 lg:gap-10 items-center">
-            <div className="border border-red-600">
+            <div className="">
               <input
                 id="selected"
                 accept="image/*,.pdf,.txt,.doc,.docx"
@@ -222,7 +224,7 @@ const Upload = () => {
               onClick={handleClick}
               className="h-[8rem] cursor-pointer w-[12rem] border-2 flex items-center text-center justify-center border-dashed"
             >
-              <p className="text-blue-700">Browse files</p>
+              <p className="text-white">Browse files</p>
             </div>
 
             <div></div>

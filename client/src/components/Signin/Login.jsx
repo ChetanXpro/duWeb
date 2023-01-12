@@ -112,7 +112,7 @@ const Login = () => {
 
           <Button
             isLoading={isLoading}
-            loadingText="Sending mail"
+            loadingText="Checking..."
             width={"full"}
             h="10"
             colorScheme={`${success ? "green" : "teal"}`}
