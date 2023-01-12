@@ -7,14 +7,23 @@ const containerClient = blobServiceClient.getContainerClient("pdf");
 import { Avatar, Button, Divider, Input, List, Select } from "antd";
 import Search from "antd/es/input/Search";
 import UploadedFiles from "./UploadedFiles";
-import { useToast } from "@chakra-ui/react";
+import {
+  useToast,
+  Button as CButton,
+  Divider as CDivider,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
+import { Bars } from "react-loader-spinner";
 
 const Upload = () => {
+  const { colorMode } = useColorMode();
   const apiPrivateInstance = useAxiosPrivate();
   const [files, setFiles] = useState(null);
   const [fileData, setFileData] = useState([]);
   const [pdfUrls, setPdfUrls] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const [fetchedCollection, setFeatchedCollection] = useState([]);
   const [collectionName, setCollectionName] = useState("");
   console.log("Recived", fileData);
@@ -63,7 +72,7 @@ const Upload = () => {
           duration: 2000,
           isClosable: true,
         });
-
+      setUploadLoading(true);
       for (const file of files) {
         const uniqueId = nanoid();
 
@@ -101,9 +110,11 @@ const Upload = () => {
                 });
 
                 setFileData([]);
+                setUploadLoading(false);
               });
           })
           .catch((err) => {
+            setUploadLoading(false);
             toast({
               title: "File not uploaded",
 
@@ -124,48 +135,69 @@ const Upload = () => {
   };
 
   return (
-    <div className="   flex items-center h-[calc(100vh)] justify-center  ">
-      <div className=" xl:bg-white w-full lg:w-[80%]       flex flex-col items-center justify-start h-full p-10 border-t-0 border border-gray-200  ">
-        <div className="flex gap-10 lg:gap-20 lg:mt-10  flex-col  md:flex-row lg:flex-row xl:flex-row items-center ">
-          <div className="flex flex-col items-center justify-center">
-            <span className="text-white">Create a Collection </span>
-            <Search
-              placeholder="Collection name"
-              enterButton="Create"
-              size="medium"
-              className="bg-blue-400 rounded"
-              onChange={(e) => {
-                setCollectionName(e.target.value);
-              }}
-              onSearch={() => {
-                createCollection();
-              }}
-              loading={false}
-            />
+    <div className="   flex items-center h-[calc(100vh)] w-full  justify-center  ">
+      <div className=" xl:bg-white w-full lg:w-full     flex flex-col items-center justify-start h-full p-10 border-t-0  ">
+        <div className="flex w-full h-full flex-1   flex-col  md:flex-row lg:flex-row xl:flex-row  ">
+          <div className="flex flex-1 flex-col   h-full ">
+            <div className="w-full flex flex-col items-center  font-sans">
+              <Text fontSize={"md"}>
+                1. Please create a Folder to upload files.
+              </Text>
+
+              <div className="w-[16rem] mt-5">
+                <Input
+                  size="large"
+                  bordered
+                  onChange={(e) => {
+                    setCollectionName(e.target.value);
+                  }}
+                  variant="outline"
+                  placeholder="Folder name"
+                />
+              </div>
+              <CButton
+                width={"40"}
+                mt={"5"}
+                onClick={() => {
+                  createCollection();
+                }}
+                loadingText="Creating.."
+                isLoading={loading}
+                colorScheme="blue"
+              >
+                Create
+              </CButton>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-white">Select a Collection </span>
-            <Select
-              showSearch
-              onFocus={() => {
-                getColllection();
-              }}
-              onChange={(e) => {
-                setCollectionName(e);
-              }}
-              size="medium"
-              style={{ width: 200 }}
-              placeholder="Select folder"
-              optionFilterProp="children"
-              filterOption={(input, option) => {
-                return option.label.includes(input);
-              }}
-              options={fetchedCollection}
-            />
+          <div className="block">
+            <CDivider className="bg-white" orientation="vertical" />
+          </div>
+          <div className="   flex flex-1 font-sans mt-10 md:mt-0 lg:mt-0  flex-col items-center">
+            <div className="w-full flex  flex-col items-center  font-sans ">
+              <Text mb={"5"}>2. Select a folder before uploading files</Text>
+
+              <Select
+                showSearch
+                onFocus={() => {
+                  getColllection();
+                }}
+                onChange={(e) => {
+                  setCollectionName(e);
+                }}
+                size="large"
+                style={{ width: 200 }}
+                placeholder="Select folder"
+                optionFilterProp="children"
+                filterOption={(input, option) => {
+                  return option.label.includes(input);
+                }}
+                options={fetchedCollection}
+              />
+            </div>
           </div>
         </div>
         <Divider className="bg-gray-200" />
-        <div className="flex flex-col mt-10  ">
+        <div className="flex flex-1 flex-col mt-10  ">
           <div className="flex  gap-6 lg:gap-10 items-center">
             <div className="">
               <input
@@ -219,22 +251,25 @@ const Upload = () => {
                 name=""
               />
             </div>
-
-            <div
-              onClick={handleClick}
-              className="h-[8rem] cursor-pointer w-[12rem] border-2 flex items-center text-center justify-center border-dashed"
-            >
-              <p className="text-white">Browse files</p>
+            <div>
+              <div
+                onClick={handleClick}
+                className={`h-[8rem] cursor-pointer w-[16rem] border-2 flex items-center text-center justify-center  border-dashed ${
+                  colorMode === "dark" ? "border-gray-400" : "border-gray-600"
+                }`}
+              >
+                <Text>Browse files</Text>
+              </div>
+              <Text fontSize={'x-small'} mt={'1'}>Only pdf, doc, docx , txt and image files are accepted</Text>
             </div>
-
-            <div></div>
-            <Button
-              className="bg-blue-400"
+            <CButton
               onClick={uploadFiles}
-              type="primary"
+              loadingText="Uploading.."
+              isLoading={uploadLoading}
+              colorScheme="blue"
             >
               Upload
-            </Button>
+            </CButton>
           </div>
           <div className="mt-4 w-full flex flex-col gap-3 justify-start">
             {fileData &&

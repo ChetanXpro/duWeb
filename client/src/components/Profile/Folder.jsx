@@ -19,7 +19,7 @@ const Folder = ({ name = "history", totalitemsInside = 0 }) => {
         </div>
         <Divider className="mt-1 bg-slate-400 mb-0" />
         <div className="flex  mb-1 justify-between text-left w-full  h-12 pl-4  flex-col">
-          <p className="text-lg font-sans text-left ">
+          <p className="text-lg capitalize font-sans text-left ">
             <Text>{name?.length > 12 ? `${name?.slice(0, 12)}...` : name}</Text>
           </p>
           <p className="text-xs font-sans">

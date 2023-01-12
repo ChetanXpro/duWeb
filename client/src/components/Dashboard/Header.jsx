@@ -40,7 +40,7 @@ const Header = () => {
           <Text>Upload</Text>
         </Link>
         <div className="flex gap-1 items-center">
-          <div className="cursor-pointer">
+          <div className="cursor-pointer md:ml-10 sm:ml-6 ml-4">
             {colorMode === "light" ? (
               <img src={Discord} height="40rem" width={"40rem"} alt="discord" />
             ) : (
