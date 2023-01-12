@@ -42,7 +42,7 @@ const getCollectionList = asyncHandler(async (req, res) => {
 
   const arr = collectionFound.map((i) => {
     const obj = {
-      lable: i.title,
+      label: i.title,
       value: i.title,
       totalNotesInside: i.totalNotesInside,
     };
