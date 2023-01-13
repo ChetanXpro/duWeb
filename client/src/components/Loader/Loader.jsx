@@ -1,6 +1,6 @@
 import { Spinner } from "@chakra-ui/react";
 import React from "react";
-import { Bars, RotatingLines } from "react-loader-spinner";
+
 
 const Loader = () => {
   return (

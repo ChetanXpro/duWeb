@@ -1,5 +1,5 @@
 
-import { Close } from "@material-ui/icons";
+
 
 
 
@@ -14,7 +14,7 @@ import Discord from "../../assets/discord.png";
 import WhiteDiscord from "../../assets/whitedis.png";
 import logo from "../../assets/nobg.png";
 import { Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { AntDesignOutlined } from "@ant-design/icons";
+import { AntDesignOutlined, CloseOutlined } from "@ant-design/icons";
 
 const MenuItems = ({ showMenu, active }) => {
  
@@ -29,7 +29,8 @@ const MenuItems = ({ showMenu, active }) => {
           : "hidden"
       }
     >
-      <Close onClick={showMenu}  />
+      
+      <CloseOutlined onClick={showMenu}  />
       <Link to={"/"} className="">
         <Text>Home</Text>
       </Link>

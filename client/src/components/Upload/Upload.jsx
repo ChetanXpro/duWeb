@@ -15,7 +15,7 @@ import {
   useColorMode,
   IconButton,
 } from "@chakra-ui/react";
-import { Bars } from "react-loader-spinner";
+
 import { CloudUploadOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 

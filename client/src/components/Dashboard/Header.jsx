@@ -9,9 +9,9 @@ import Discord from "../../assets/discord.png";
 import WhiteDiscord from "../../assets/whitedis.png";
 import logo from "../../assets/nobg.png";
 import { Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { AntDesignOutlined } from "@ant-design/icons";
+import { AntDesignOutlined, MenuFoldOutlined } from "@ant-design/icons";
 
-import { MenuOutlined } from "@material-ui/icons";
+
 
 import MenuItems from "./MenuItems";
 
@@ -46,7 +46,7 @@ const Header = () => {
 
       <nav>
         <div className="absolute cursor-pointer right-6 md:hidden top-6 scale-150">
-          <MenuOutlined
+          <MenuFoldOutlined
             onClick={showMenu}
             className="scale-150 cursor-pointer"
           />
