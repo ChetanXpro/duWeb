@@ -10,17 +10,13 @@ import Folder from "./Folder";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
 const Profile = () => {
-  
-  
   const { getCollection, collection } = usePrivateApis();
-  
 
   const queryClient = useQueryClient();
 
   const { isLoading, isError, data, error, refetch, isSuccess } = useQuery(
     "collection",
-    getCollection,
-    
+    getCollection
   );
 
   const refetchData = () => refetch();

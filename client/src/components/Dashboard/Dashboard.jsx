@@ -7,7 +7,7 @@ const Dashboard = () => {
     <>
       <Navbar />
       <div className="">
-      {/* <div className="h-[calc(100vh-3rem)]"> */}
+        {/* <div className="h-[calc(100vh-3rem)]"> */}
         <Outlet />
       </div>
 
