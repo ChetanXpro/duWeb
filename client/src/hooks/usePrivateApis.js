@@ -44,10 +44,20 @@ const usePrivateApis = () => {
       return Promise.reject(error.response);
     }
   };
+  const deleteNote = async (id, re) => {
+    try {
+      const request = await apiPrivateInstance.delete(`/note/?noteID=${id}`);
+      re();
+      return request?.data;
+    } catch (err) {
+      const error = err;
+      return Promise.reject(error.response);
+    }
+  };
 
   return {
     getCollection,
-
+    deleteNote,
     getNotes,
     deleteCollection,
   };

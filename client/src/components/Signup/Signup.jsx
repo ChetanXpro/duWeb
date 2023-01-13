@@ -15,18 +15,16 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [validName,setValidName] = useState(false)
+  const [validName, setValidName] = useState(false);
   const [success, setSuccess] = useState(false);
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const toast = useToast({ position: "top" });
-  
-console.log(validName)
+
+  console.log(validName);
   useEffect(() => {
     setValidName(PWD_REGEX.test(password));
   }, [password]);
-
-
 
   const { isLoading, isError, error, mutate } = useMutation(signup, {
     onSuccess: (data) => {
@@ -51,14 +49,14 @@ console.log(validName)
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
-      username: email,
+      name: name,
+      email: email,
       password,
     };
     mutate(payload);
   };
   return (
     <Flex h="100vh" bg={"#2b2b2b"} justifyContent="center">
-     
       <Flex
         marginX="6"
         marginY={"6"}
@@ -76,7 +74,6 @@ console.log(validName)
           >
             Create your account
           </Text>
-      
 
           <FormControl mb={"4"} isInvalid={validName}>
             <Input

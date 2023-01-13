@@ -26,6 +26,7 @@ function App() {
             <Route path="setting" element={<Setting />} />
             <Route path="profile" element={<Profile />} />
             <Route path="profile/:id" element={<NotesPage />} />
+            {/* <Route path="profile/:id" element={<NotesPage />} /> */}
             <Route path="upload" element={<UploadFile />} />
           </Route>
         </Route>

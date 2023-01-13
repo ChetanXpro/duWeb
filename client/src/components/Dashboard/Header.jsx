@@ -41,22 +41,29 @@ const Header = () => {
         </Link>
         <div className="flex gap-1 items-center">
           <div className="cursor-pointer md:ml-10 sm:ml-6 ml-4">
-            {colorMode === "light" ? (
-              <img src={Discord} height="40rem" width={"40rem"} alt="discord" />
-            ) : (
-              <img
-                src={WhiteDiscord}
-                height="40rem"
-                width={"40rem"}
-                alt="discord"
-              />
-            )}
-              </div>
-            <IconButton
-              onClick={toggleColorMode}
-              ml={4}
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            />
+            <a target={"_blank"} href="https://discord.gg/kDJQqxqv">
+              {colorMode === "light" ? (
+                <img
+                  src={Discord}
+                  height="40rem"
+                  width={"40rem"}
+                  alt="discord"
+                />
+              ) : (
+                <img
+                  src={WhiteDiscord}
+                  height="40rem"
+                  width={"40rem"}
+                  alt="discord"
+                />
+              )}
+            </a>
+          </div>
+          <IconButton
+            onClick={toggleColorMode}
+            ml={4}
+            icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+          />
 
           <div className="ml-4 mr-2">
             <Avatar name={`${userData?.name}`} size={"sm"} />

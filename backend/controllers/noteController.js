@@ -94,7 +94,6 @@ const getNotes = asyncHandler(async (req, res) => {
 
   const foundNotes = await Note.find({
     collectionID: collectionID,
-   
   });
 
   const arr = foundNotes.map((i) => {
@@ -133,7 +132,35 @@ const deleteCollection = asyncHandler(async (req, res) => {
 
 const updateNote = asyncHandler(async (req, res) => {});
 
-const deleteNote = asyncHandler(async (req, res) => {});
+const deleteNote = asyncHandler(async (req, res) => {
+  const { noteID } = req.query;
+
+  if (!noteID || noteID.length !== 24)
+    return res.status(400).json({
+      success: false,
+      message: "Please provide a valid collection id",
+    });
+
+  // const { acknowledged, deletedCount } = await Note.deleteOne({
+  //   _id: noteID,
+  //   userId: req.id,
+  // });
+
+  const foundNote = await Note.findOne({ _id: noteID, userId: req.id });
+
+  if (!foundNote)
+    return res.status(400).json({ success: false, message: "No note found" });
+
+  const collectionFound = await Collection.findById(foundNote.collectionID);
+  await collectionFound.updateOne({ $inc: { totalNotesInside: -1 } });
+
+ const cc = await foundNote.deleteOne();
+ 
+
+  
+
+  res.status(200).json({ success: true, message: "note deleted" });
+});
 
 module.exports = {
   createCollection,

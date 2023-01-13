@@ -13,7 +13,8 @@ import { useToast } from "@chakra-ui/react";
 import { user } from "../../atoms/status";
 const Login = () => {
   const [email, setEmail] = useState("");
-  const from = location?.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || "/";
+
   const navigate = useNavigate();
   // const { setAuth, setUser } = useAuth();
   const [success, setSuccess] = useState(false);
@@ -40,12 +41,9 @@ const Login = () => {
         name: data.name,
       });
 
-      
-
-    
       setSuccess(true);
 
-      navigate("/");
+      navigate(from, { replace: true });
     },
     onError: () => {
       console.log("error" + error);
@@ -123,10 +121,15 @@ const Login = () => {
           </Button>
         </form>
         <div></div>
-        <Flex mt={'4'} justifyContent='center'>
-
-        <span style={{textAlign:'center',marginRight:'6px',color:'wheat'}}>Don't have an account ? </span>
-        <Link className="text-blue-400" to={'/sign_up'}>Sign up</Link>
+        <Flex mt={"4"} justifyContent="center">
+          <span
+            style={{ textAlign: "center", marginRight: "6px", color: "wheat" }}
+          >
+            Don't have an account ?{" "}
+          </span>
+          <Link className="text-blue-400" to={"/sign_up"}>
+            Sign up
+          </Link>
         </Flex>
       </Flex>
     </Flex>

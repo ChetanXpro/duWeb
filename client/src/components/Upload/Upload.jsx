@@ -168,7 +168,7 @@ const Upload = () => {
 
   return (
     <div className="   flex items-center h-[calc(100vh)] w-full  justify-center  ">
-      <div className=" xl:bg-white w-full lg:w-full     flex flex-col items-center justify-start h-full p-10 border-t-0  ">
+      <div className="  w-full lg:w-full     flex flex-col items-center justify-start h-full p-10 border-t-0  ">
         <div className="flex w-full h-full md:mb-4 flex-1 -mb-6  flex-col  md:flex-row lg:flex-row xl:flex-row  ">
           <div className="flex flex-1 mt-20 lg:mt-0 xl:mt-0 flex-col   h-full ">
             <div className="w-full flex flex-col items-center  font-sans">

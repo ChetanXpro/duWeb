@@ -1,4 +1,4 @@
-import { Spinner, useColorMode } from "@chakra-ui/react";
+import { Spinner, Text, useColorMode } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -11,9 +11,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center gap-3 ">
-      <h2>Login successfuly </h2>
-
-      {/* <img src={img} height="40%" width={"40%"} alt="" /> */}
+      <Text>Search for Notes</Text>
     </div>
   );
 };
