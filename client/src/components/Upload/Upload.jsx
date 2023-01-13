@@ -13,8 +13,11 @@ import {
   Divider as CDivider,
   Text,
   useColorMode,
+  IconButton,
 } from "@chakra-ui/react";
 import { Bars } from "react-loader-spinner";
+import { CloudUploadOutlined, SearchOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const Upload = () => {
   const { colorMode } = useColorMode();
@@ -30,6 +33,7 @@ const Upload = () => {
   console.log("Recived", fileData);
   const toast = useToast({ position: "top" });
 
+  const navigate = useNavigate();
   const getColllection = async () => {
     const res = await apiPrivateInstance.get("/note/collection");
     setFeatchedCollection([...res.data.arr]);
@@ -40,7 +44,7 @@ const Upload = () => {
     try {
       if (!collectionName) {
         setLoading(false);
-       return toast({
+        return toast({
           title: `Please fill folder name`,
           status: "error",
           duration: 2000,
@@ -82,11 +86,8 @@ const Upload = () => {
           duration: 2000,
           isClosable: true,
         });
-      
-     
 
       if (!files?.length > 0) {
-       
         return toast({
           title: "Please select files",
 
@@ -172,9 +173,7 @@ const Upload = () => {
         <div className="flex w-full h-full md:mb-4 flex-1 -mb-6  flex-col  md:flex-row lg:flex-row xl:flex-row  ">
           <div className="flex flex-1 mt-20 lg:mt-0 xl:mt-0 flex-col   h-full ">
             <div className="w-full flex flex-col items-center  font-sans">
-              <Text fontSize={"md"}>
-                1. Please create a Folder to upload files.
-              </Text>
+              <Text fontSize={"md"}>Create a Folder to upload files.</Text>
 
               <div className="w-[16rem] mt-5">
                 <Input
@@ -207,10 +206,11 @@ const Upload = () => {
           </div>
           <div className="   flex flex-1 font-sans mt-20 mb-10 md:mb-0 lg:mb-0 xl:mb-0 lg:mt-0  flex-col  items-center">
             <div className="w-full flex  flex-col items-center  font-sans ">
-              <Text mb={"5"}>2. Select a folder before uploading files</Text>
+              <Text mb={"5"}>Select a folder before uploading files</Text>
 
               <Select
                 showSearch
+               
                 onFocus={() => {
                   getColllection();
                 }}
@@ -231,6 +231,13 @@ const Upload = () => {
         </div>
         <Divider className="bg-gray-200" />
         <div className="flex flex-1  flex-col mt-10  ">
+          <CButton onClick={() => navigate("/profile")} h={"10"} mb="6">
+            Profile
+          </CButton>
+
+          <Text h={"10"} textAlign="center" mb="6">
+            Check your profile after uploading files
+          </Text>
           <div className="flex  gap-6 lg:gap-10 items-center">
             <div className="">
               <input
@@ -290,8 +297,8 @@ const Upload = () => {
                 className={`h-[8rem] cursor-pointer w-[16rem] border-2 flex items-center text-center justify-center  border-dashed ${
                   colorMode === "dark" ? "border-gray-400" : "border-gray-600"
                 }`}
-              >
-                <Text>Browse files</Text>
+              ><SearchOutlined />
+                <Text ml={'1.5'}>Browse files</Text>
               </div>
               <Text fontSize={"x-small"} mt={"1"}>
                 Only pdf, doc, docx , txt and image files are accepted
@@ -299,6 +306,8 @@ const Upload = () => {
             </div>
             <div className="mr-4">
               <CButton
+                w={"32"}
+                leftIcon={<CloudUploadOutlined />}
                 onClick={uploadFiles}
                 loadingText="Uploading.."
                 isLoading={uploadLoading}

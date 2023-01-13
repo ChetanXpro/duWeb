@@ -5,7 +5,7 @@ import React from "react";
 const UploadedFiles = ({ fileName, fileSize }) => {
   const { colorMode } = useColorMode();
   return (
-    <div className={`w-full justify-around flex items-center border ${colorMode === 'dark' ? 'border-gray-300':"border-gray-700"} border-dashed   h-8 rounded`}>
+    <div className={`w-[22rem] justify-around flex items-center border ${colorMode === 'dark' ? 'border-gray-300':"border-gray-700"} border-dashed   h-8 rounded`}>
       <span
         className={`w-4 ${
           colorMode === "dark" ? "" : "text-black"
