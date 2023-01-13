@@ -5,6 +5,10 @@ const asyncHandler = require("express-async-handler");
 
 // Create collection
 const createCollection = asyncHandler(async (req, res) => {
+  if (!req.id)
+    return res
+      .status(400)
+      .json({ success: false, message: "Something went wrong" });
   const { collectionName } = req.body;
   if (!collectionName)
     return res.status(400).json({ success: false, message: "Invalid input" });
@@ -90,7 +94,7 @@ const getNotes = asyncHandler(async (req, res) => {
 
   const foundNotes = await Note.find({
     collectionID: collectionID,
-    userId: req.id,
+   
   });
 
   const arr = foundNotes.map((i) => {

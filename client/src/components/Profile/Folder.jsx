@@ -4,28 +4,39 @@ import {
   Button,
   Divider,
   Highlight,
+  IconButton,
   Image,
   Text,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import { Popconfirm } from "antd";
 
 import React from "react";
+import { useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import folder from "../../../public/folder.ico";
+import folder from "../../assets/folder.ico";
 
-const Folder = ({ name = "history", totalitemsInside = 0, id, onOpen }) => {
+import usePrivateApis from "../../hooks/usePrivateApis";
+
+const Folder = ({
+  name = "history",
+  totalitemsInside = 0,
+  id,
+  re,
+}) => {
+  const { deleteCollection } = usePrivateApis();
+  const toast = useToast({ position: "top" });
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
-  const confirm = () =>
-    new Promise((resolve) => {
-      setTimeout(() => resolve(null), 3000);
-    });
+
   return (
     <div
-      className={`m-2 relative p-2  cursor-pointer ${
+      className={`m-2 relative   cursor-pointer ${
         colorMode === "dark"
-          ? "hover:bg-gray-900 hover:rounded-md"
+          ? "hover:bg-gray-900  hover:rounded-md"
           : "hover:bg-gray-300 hover:rounded-md"
       }  md:m-4`}
       onClick={() => {
@@ -40,18 +51,29 @@ const Folder = ({ name = "history", totalitemsInside = 0, id, onOpen }) => {
           color={"blue"}
           title="All files inside this folder will deleted"
           description={`Are you sure to delete ${name} Folder `}
-          onConfirm={confirm}
+          onConfirm={() => {
+            deleteCollection(id,re);
+            queryClient.invalidateQueries("collection");
+            
+            toast({
+              title: `${name} Folder Deleted`,
+              status: "success",
+              duration: 2000,
+              isClosable: true,
+            });
+          }}
           // onCancel={cancel}
-          okText="Yes"
-          cancelText="No"
+          okText="Delete"
+          cancelText="Cancel"
         >
           <a href="#">
-            <DeleteIcon className="" />
+            <IconButton colorScheme={'red'} icon={<DeleteIcon className="" />}/>
+            
           </a>
         </Popconfirm>
       </div>
 
-      <div className=" flex flex-col items-center  border rounded-md w-40">
+      <div className=" flex flex-col items-center border-gray-300  border rounded-md w-40">
         <div>
           <img height={"100rem"} width="120rem" src={folder} alt="" />
         </div>

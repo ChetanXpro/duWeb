@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 
 const usePrivateApis = () => {
@@ -7,6 +7,7 @@ const usePrivateApis = () => {
   const getCollection = async () => {
     try {
       const request = await apiPrivateInstance.get("/note/collection");
+
       return request?.data;
     } catch (err) {
       const error = err;
@@ -18,8 +19,25 @@ const usePrivateApis = () => {
       const [key, id] = queryKey;
       const collectionID = id;
 
-      const request = await apiPrivateInstance.get(`/note?collectionID=${collectionID}`);
-      console.log(request.data);
+      const request = await apiPrivateInstance.get(
+        `/note?collectionID=${collectionID}`
+      );
+
+      return request?.data;
+    } catch (err) {
+      const error = err;
+      return Promise.reject(error.response);
+    }
+  };
+
+  const deleteCollection = async (id, re) => {
+    try {
+      const collectionID = id;
+
+      const request = await apiPrivateInstance.delete(
+        `/note/collection?collectionID=${collectionID}`
+      );
+      re();
       return request?.data;
     } catch (err) {
       const error = err;
@@ -29,7 +47,9 @@ const usePrivateApis = () => {
 
   return {
     getCollection,
+
     getNotes,
+    deleteCollection,
   };
 };
 

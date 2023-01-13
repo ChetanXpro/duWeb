@@ -5,9 +5,9 @@ import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { user } from "../../atoms/status";
-import Discord from "../../../public/discord.png";
-import WhiteDiscord from "../../../public/whitedis.png";
-import logo from "../../../public/nobg.png";
+import Discord from "../../assets/discord.png";
+import WhiteDiscord from "../../assets/whitedis.png";
+import logo from "../../assets/nobg.png";
 import { Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { AntDesignOutlined } from "@ant-design/icons";
 
