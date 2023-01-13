@@ -26,6 +26,7 @@ const Upload = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [fetchedCollection, setFeatchedCollection] = useState([]);
   const [collectionName, setCollectionName] = useState("");
+  const [selectedCollection, setSelectedCollection] = useState("");
   console.log("Recived", fileData);
   const toast = useToast({ position: "top" });
 
@@ -37,21 +38,31 @@ const Upload = () => {
 
   const createCollection = async () => {
     try {
+      if (!collectionName) {
+        setLoading(false);
+       return toast({
+          title: `Please fill folder name`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
       setLoading(true);
       const res = await apiPrivateInstance.post("/note/collection", {
         collectionName: collectionName,
       });
-      console.log(res.data);
-      setLoading(false);
+
       setCollectionName("");
+      setLoading(false);
       toast({
-        title: `${collectionName} collection is created`,
+        title: `${collectionName} Folder is created`,
         status: "success",
         duration: 2000,
         isClosable: true,
       });
     } catch (error) {
       console.log("error", error);
+      setLoading(false);
     }
   };
   const [isUploadingCompleted, setIsUpoadingCompleted] = useState(false);
@@ -62,16 +73,28 @@ const Upload = () => {
   const uploadFiles = async () => {
     try {
       const promises = [];
-      const uploadedPdfsData = [];
 
-      if (!collectionName)
+      if (!selectedCollection)
         return toast({
-          title: "Please select Collection",
+          title: "Please select a folder to upload files",
 
           status: "error",
           duration: 2000,
           isClosable: true,
         });
+      
+     
+
+      if (!files?.length > 0) {
+       
+        return toast({
+          title: "Please select files",
+
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
       setUploadLoading(true);
       for (const file of files) {
         const uniqueId = nanoid();
@@ -83,7 +106,6 @@ const Upload = () => {
           NoteName: file.name,
           url: `https://duweb.blob.core.windows.net/pdf/${nameChanged.name}`,
         };
-        uploadedPdfsData.push(obj);
 
         const blockBlobClient = containerClient.getBlockBlobClient(
           nameChanged.name
@@ -91,16 +113,16 @@ const Upload = () => {
         blockBlobClient
           .uploadBrowserData(nameChanged)
           .then((res) => {
-            console.log(res);
             apiPrivateInstance
               .post("/note", {
-                collectionName,
+                collectionName: selectedCollection,
                 noteName: obj.NoteName,
                 url: obj.url,
               })
               .then((res) => {
                 console.log(res.data);
                 setIsUploading(true);
+                setFiles([]);
                 toast({
                   title: "Files Uploaded successfuly",
 
@@ -111,9 +133,21 @@ const Upload = () => {
 
                 setFileData([]);
                 setUploadLoading(false);
+              })
+              .catch((err) => {
+                console.log("mongo", err);
+                setUploadLoading(false);
+                toast({
+                  title: "Files not uploaded",
+
+                  status: "error",
+                  duration: 2000,
+                  isClosable: true,
+                });
               });
           })
           .catch((err) => {
+            console.log("az", err);
             setUploadLoading(false);
             toast({
               title: "File not uploaded",
@@ -124,8 +158,6 @@ const Upload = () => {
             });
           });
       }
-
-      console.log(uploadedPdfsData);
     } catch (error) {
       console.log(error);
     }
@@ -137,8 +169,8 @@ const Upload = () => {
   return (
     <div className="   flex items-center h-[calc(100vh)] w-full  justify-center  ">
       <div className=" xl:bg-white w-full lg:w-full     flex flex-col items-center justify-start h-full p-10 border-t-0  ">
-        <div className="flex w-full h-full flex-1   flex-col  md:flex-row lg:flex-row xl:flex-row  ">
-          <div className="flex flex-1 flex-col   h-full ">
+        <div className="flex w-full h-full md:mb-4 flex-1 -mb-6  flex-col  md:flex-row lg:flex-row xl:flex-row  ">
+          <div className="flex flex-1 mt-20 lg:mt-0 xl:mt-0 flex-col   h-full ">
             <div className="w-full flex flex-col items-center  font-sans">
               <Text fontSize={"md"}>
                 1. Please create a Folder to upload files.
@@ -148,6 +180,7 @@ const Upload = () => {
                 <Input
                   size="large"
                   bordered
+                  value={collectionName}
                   onChange={(e) => {
                     setCollectionName(e.target.value);
                   }}
@@ -172,7 +205,7 @@ const Upload = () => {
           <div className="block">
             <CDivider className="bg-white" orientation="vertical" />
           </div>
-          <div className="   flex flex-1 font-sans mt-10 md:mt-0 lg:mt-0  flex-col items-center">
+          <div className="   flex flex-1 font-sans mt-20 mb-10 md:mb-0 lg:mb-0 xl:mb-0 lg:mt-0  flex-col  items-center">
             <div className="w-full flex  flex-col items-center  font-sans ">
               <Text mb={"5"}>2. Select a folder before uploading files</Text>
 
@@ -182,7 +215,7 @@ const Upload = () => {
                   getColllection();
                 }}
                 onChange={(e) => {
-                  setCollectionName(e);
+                  setSelectedCollection(e);
                 }}
                 size="large"
                 style={{ width: 200 }}
@@ -197,7 +230,7 @@ const Upload = () => {
           </div>
         </div>
         <Divider className="bg-gray-200" />
-        <div className="flex flex-1 flex-col mt-10  ">
+        <div className="flex flex-1  flex-col mt-10  ">
           <div className="flex  gap-6 lg:gap-10 items-center">
             <div className="">
               <input
@@ -260,18 +293,22 @@ const Upload = () => {
               >
                 <Text>Browse files</Text>
               </div>
-              <Text fontSize={'x-small'} mt={'1'}>Only pdf, doc, docx , txt and image files are accepted</Text>
+              <Text fontSize={"x-small"} mt={"1"}>
+                Only pdf, doc, docx , txt and image files are accepted
+              </Text>
             </div>
-            <CButton
-              onClick={uploadFiles}
-              loadingText="Uploading.."
-              isLoading={uploadLoading}
-              colorScheme="blue"
-            >
-              Upload
-            </CButton>
+            <div className="mr-4">
+              <CButton
+                onClick={uploadFiles}
+                loadingText="Uploading.."
+                isLoading={uploadLoading}
+                colorScheme="blue"
+              >
+                Upload
+              </CButton>
+            </div>
           </div>
-          <div className="mt-4 w-full flex flex-col gap-3 justify-start">
+          <div className="mt-4 w-full flex flex-col  gap-2 justify-start">
             {fileData &&
               fileData.map((item) => (
                 <UploadedFiles

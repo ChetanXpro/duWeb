@@ -3,13 +3,11 @@ const Note = require("../models/Note");
 const Collection = require("../models/Collection");
 const asyncHandler = require("express-async-handler");
 
-const getAllNotes = asyncHandler(async (req, res) => {});
-
 // Create collection
 const createCollection = asyncHandler(async (req, res) => {
   const { collectionName } = req.body;
   if (!collectionName)
-    return res.status(400).json({ success: true, message: "Invalid input" });
+    return res.status(400).json({ success: false, message: "Invalid input" });
   const isCollectionAlreadyExist = await Collection.findOne({
     title: collectionName,
     user: req.id,
@@ -38,17 +36,19 @@ const getCollectionList = asyncHandler(async (req, res) => {
       .status(400)
       .json({ success: false, message: "Something went wrong" });
 
-  const collectionFound = await Collection.find({ user: id }).lean();
+  const collectionFound = await Collection.find({
+    user: id,
+  }).lean();
 
   const arr = collectionFound.map((i) => {
     const obj = {
+      id: i._id,
       label: i.title,
       value: i.title,
       totalNotesInside: i.totalNotesInside,
     };
     return obj;
   });
-  console.log(arr);
 
   res.status(200).json({ arr });
 });
@@ -69,6 +69,7 @@ const createNotes = asyncHandler(async (req, res) => {
 
   await Note.create({
     name: noteName,
+    userId: req.id,
     url,
     collectionID: collectionFound._id,
   });
@@ -78,15 +79,64 @@ const createNotes = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: "Note Uploaded" });
 });
 
+const getNotes = asyncHandler(async (req, res) => {
+  const { collectionID } = req.query;
+
+  if (!collectionID || collectionID.length !== 24)
+    return res.status(400).json({
+      success: false,
+      message: "Please provide a valid collection id",
+    });
+
+  const foundNotes = await Note.find({
+    collectionID: collectionID,
+    userId: req.id,
+  });
+
+  const arr = foundNotes.map((i) => {
+    const obj = {
+      id: i._id,
+      name: i.name,
+      url: i.url,
+    };
+    return obj;
+  });
+
+  res.status(200).json({ arr });
+});
+
+const deleteCollection = asyncHandler(async (req, res) => {
+  const { collectionID } = req.query;
+
+  if (!collectionID || collectionID.length !== 24)
+    return res.status(400).json({
+      success: false,
+      message: "Please provide a valid collection id",
+    });
+
+  const { acknowledged, deletedCount } = await Collection.deleteOne({
+    _id: collectionID,
+    user: req.id,
+  });
+
+  if (!deletedCount)
+    return res.status(400).json({ success: false, message: "No folder found" });
+
+  const notes = await Note.deleteMany({ collectionID, userId: req.id });
+
+  res.status(200).json({ success: true, message: "Folder deleted" });
+});
+
 const updateNote = asyncHandler(async (req, res) => {});
 
 const deleteNote = asyncHandler(async (req, res) => {});
 
 module.exports = {
-  getAllNotes,
   createCollection,
   updateNote,
   deleteNote,
   getCollectionList,
   createNotes,
+  deleteCollection,
+  getNotes,
 };

@@ -1,17 +1,26 @@
 import { PaperClipOutlined } from "@ant-design/icons";
+import { Text, useColorMode } from "@chakra-ui/react";
 import React from "react";
 
-
 const UploadedFiles = ({ fileName, fileSize }) => {
+  const { colorMode } = useColorMode();
   return (
-    <div className="w-full justify-around flex items-center border border-dashed text-white h-8 rounded">
-      <span className="w-4 pl-1 flex items-center">
+    <div className={`w-full justify-around flex items-center border ${colorMode === 'dark' ? 'border-gray-300':"border-gray-700"} border-dashed   h-8 rounded`}>
+      <span
+        className={`w-4 ${
+          colorMode === "dark" ? "" : "text-black"
+        } pl-1 flex items-center`}
+      >
         <PaperClipOutlined />
       </span>
       <span className="flex p-2 text-sm  flex-1">
-        {fileName?.length > 30 ? `${fileName?.slice(0, 30)}..` : fileName}
+        <Text>
+          {fileName?.length > 30 ? `${fileName?.slice(0, 30)}..` : fileName}
+        </Text>
       </span>
-      <span className="w-24 text-sm">{fileSize}</span>
+      <span className="w-24 text-sm">
+        <Text>{fileSize}</Text>
+      </span>
     </div>
   );
 };

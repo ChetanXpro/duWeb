@@ -11,7 +11,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import RequireAuth from "./components/RequireAuth";
 import Layout from "./components/Layout";
 import UploadFile from "./components/Upload/Upload";
-
+import NotesPage from "./components/NotesPage/NotesPage";
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="setting" element={<Setting />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="profile/:id" element={<NotesPage />} />
             <Route path="upload" element={<UploadFile />} />
           </Route>
         </Route>

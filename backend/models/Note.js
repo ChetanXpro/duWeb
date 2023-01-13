@@ -7,6 +7,11 @@ const schema = new mongoose.Schema(
       require: true,
       ref: "Collection",
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      require: true,
+      ref: "User",
+    },
     name: {
       type: String,
       require: true,

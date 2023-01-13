@@ -12,6 +12,7 @@ const useAxiosPrivate = () => {
     const accessToken = localStorage.getItem("jwt");
     const requestIntercept = apiPrivateInstance.interceptors.request.use(
       (config) => {
+       
         if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
