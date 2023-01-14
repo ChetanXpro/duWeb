@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API_BASE_URL = "http://localhost:5000";
-const API_BASE_URL = "https://duw.onrender.com";
+const API_BASE_URL = "https://duwebbbb.onrender.com";
 export const apiInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
@@ -10,7 +10,7 @@ export const apiInstance = axios.create({
 
 export const apiPrivateInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 15000,
   headers: {
     "Content-type": "application/json",
   },
