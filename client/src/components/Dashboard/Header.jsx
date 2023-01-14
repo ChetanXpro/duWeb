@@ -33,9 +33,9 @@ const Header = () => {
         colorMode === "dark" ? "bg-gray-900" : "bg-gray-200"
       }   font-mono    h-16  flex justify-between p-4 items-center`}
     >
-      <div className="text-2xl flex items-center  justify-center font-bold text-center uppercase">
+      <div className="text-md flex items-center  justify-center font-bold text-center uppercase">
         <h1>
-          cloud <span className="block text-4xl">Notes</span>
+          cloud <span className="block text-2xl">Notes</span>
         </h1>
         <Tag
           size={"sm"}

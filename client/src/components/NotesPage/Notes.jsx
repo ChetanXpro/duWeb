@@ -46,7 +46,7 @@ const Notes = ({ name, url, re, id,size }) => {
   const EXT = name.slice(-4).toLowerCase();
   return (
     <div
-      className={`m-2 relative  flex ${
+      className={`m-2 relative mt-8  flex ${
         colorMode === "dark"
           ? "hover:bg-gray-900 hover:rounded-md"
           : "hover:bg-gray-300 hover:rounded-md"

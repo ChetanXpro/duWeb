@@ -1,8 +1,3 @@
-
-
-
-
-
 import { Avatar, IconButton, Text, useColorMode } from "@chakra-ui/react";
 import { Image, Avatar as Avatarr } from "antd";
 import { useAtom } from "jotai";
@@ -17,10 +12,14 @@ import { Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { AntDesignOutlined, CloseOutlined } from "@ant-design/icons";
 
 const MenuItems = ({ showMenu, active }) => {
- 
   const { colorMode, toggleColorMode } = useColorMode();
   const [userData, setUser] = useAtom(user);
   const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("jwt");
+    showMenu();
+    navigate("sign_in");
+  };
   return (
     <ul
       className={
@@ -29,50 +28,47 @@ const MenuItems = ({ showMenu, active }) => {
           : "hidden"
       }
     >
-      
-      <CloseOutlined onClick={showMenu}  />
-      <Link onClick={showMenu} to={"/"} className="">
+      <CloseOutlined onClick={showMenu} />
+      <Link className="hover:underline" onClick={showMenu} to={"/"}>
         <Text>Home</Text>
       </Link>
 
-      <Link onClick={showMenu} to={"/profile"} >
+      <Link className="hover:underline" onClick={showMenu} to={"/profile"}>
         <Text>Profile</Text>
       </Link>
 
-      <Link onClick={showMenu} to={"/upload"} >
+      <Link className="hover:underline" onClick={showMenu} to={"/upload"}>
         <Text>Upload</Text>
       </Link>
+      <Link className="hover:underline" onClick={logout} to={"/upload"}>
+        <Text>Logout</Text>
+      </Link>
       <div className="flex gap-1 items-center">
-            <div className="cursor-pointer md:ml-10 sm:ml-6 ml-4">
-              <a target={"_blank"} href="https://discord.gg/kDJQqxqv">
-                {colorMode === "light" ? (
-                  <img
-                    src={Discord}
-                    height="40rem"
-                    width={"40rem"}
-                    alt="discord"
-                  />
-                ) : (
-                  <img
-                    src={WhiteDiscord}
-                    height="40rem"
-                    width={"40rem"}
-                    alt="discord"
-                  />
-                )}
-              </a>
-            </div>
-            <IconButton
-              onClick={toggleColorMode}
-              // colorScheme='blue'
-              ml={4}
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            />
+        <div className="cursor-pointer md:ml-10 sm:ml-6 ml-4">
+          <a target={"_blank"} href="https://discord.gg/kDJQqxqv">
+            {colorMode === "light" ? (
+              <img src={Discord} height="40rem" width={"40rem"} alt="discord" />
+            ) : (
+              <img
+                src={WhiteDiscord}
+                height="40rem"
+                width={"40rem"}
+                alt="discord"
+              />
+            )}
+          </a>
+        </div>
+        <IconButton
+          onClick={toggleColorMode}
+          // colorScheme='blue'
+          ml={4}
+          icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+        />
 
-            <div className="ml-4 mr-2">
-              <Avatar name={`${userData?.name}`} size={"sm"} />
-            </div>
-          </div>
+        <div className="ml-4 mr-2">
+          <Avatar name={`${userData?.name}`} size={"sm"} />
+        </div>
+      </div>
     </ul>
   );
 };

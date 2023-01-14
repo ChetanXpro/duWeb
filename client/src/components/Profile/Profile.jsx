@@ -31,7 +31,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex items-center justify-center mt-2 lg:ml-6 md:ml-6 xl:ml-6 lg:p-4 lg:justify-start md:justify-start xl:justify-start flex-wrap md:mt-12 lg:mt-6 xl:mt-10 ">
+    <div className="flex items-center justify-center mt-12 lg:ml-6 md:ml-6 xl:ml-6 lg:p-4 lg:justify-start md:justify-start xl:justify-start flex-wrap md:mt-12 lg:mt-6 xl:mt-10 ">
       {data.arr.length > 0 ? (
         data.arr.map((i) => (
           // <WrapItem>

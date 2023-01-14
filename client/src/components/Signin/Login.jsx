@@ -90,7 +90,7 @@ const Login = () => {
           <FormControl mb={"4"} isInvalid={false}>
             <Input
               type={"email"}
-              h="10"
+              h="12"
               color={"whiteAlpha.900"}
               autoComplete="true"
               onChange={(e) => setEmail(e.target.value)}
@@ -100,7 +100,7 @@ const Login = () => {
           <FormControl mb={"4"} isInvalid={false}>
             <Input
               type={"password"}
-              h="10"
+              h="12"
               color={"whiteAlpha.900"}
               autoComplete="true"
               onChange={(e) => setPassword(e.target.value)}
@@ -112,7 +112,7 @@ const Login = () => {
             isLoading={isLoading}
             loadingText="Checking..."
             width={"full"}
-            h="10"
+            h="12"
             colorScheme={`${success ? "green" : "teal"}`}
             mt={"2"}
             onClick={handleSubmit}

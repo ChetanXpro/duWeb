@@ -10,7 +10,7 @@ const EntryPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   return (
-    <div className=" flex flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row   h-full w-full items-center gap-3 ">
+    <div className=" flex flex-col bg-orange-400 sm:flex-row md:flex-row lg:flex-row xl:flex-row   h-full w-full items-center gap-3 ">
       <div className="mt-8 flex flex-col items-center justify-center mb-6 flex-1">
         <Text className="text-4xl md:text-4xl lg:text-6xl mb-3   font-sans text-center flex-1">
           Store Your Notes
