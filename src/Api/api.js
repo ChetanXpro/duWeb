@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API_BASE_URL = "http://localhost:5000";
-const API_BASE_URL = "https://duwebbbb.onrender.com";
+const API_BASE_URL = "https://cloudnotess.azurewebsites.net";
 export const apiInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
