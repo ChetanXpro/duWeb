@@ -1,22 +1,17 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
-// import useAuth from "./useAuth";
-// import useRefreshToken from "./useRefreshToken";
-
-// const API_BASE_URL = "http://localhost:5000";
-const API_BASE_URL = "https://duw.onrender.com";
+const API_BASE_URL = "http://localhost:5000";
+// const API_BASE_URL = "https://duw.onrender.com";
 export const apiInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   withCredentials: true,
 });
-const accessToken = localStorage.getItem("jwt");
 
 export const apiPrivateInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
-    // Authorization: `Bearer ${accessToken}`,
     "Content-type": "application/json",
   },
   withCredentials: true,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BlobServiceClient } from "@azure/storage-blob";
 import { nanoid } from "nanoid";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -30,15 +30,18 @@ const Upload = () => {
   const [fetchedCollection, setFeatchedCollection] = useState([]);
   const [collectionName, setCollectionName] = useState("");
   const [selectedCollection, setSelectedCollection] = useState("");
-  console.log("Recived", fileData);
+
   const toast = useToast({ position: "top" });
 
   const navigate = useNavigate();
   const getColllection = async () => {
     const res = await apiPrivateInstance.get("/note/collection");
     setFeatchedCollection([...res.data.arr]);
-    console.log(fetchedCollection);
   };
+
+  useEffect(() => {
+    getColllection();
+  }, []);
 
   const createCollection = async () => {
     try {
@@ -65,7 +68,12 @@ const Upload = () => {
         isClosable: true,
       });
     } catch (error) {
-      console.log("error", error);
+      toast({
+        title: `${error?.response?.data?.message}`,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
       setLoading(false);
     }
   };
@@ -74,9 +82,64 @@ const Upload = () => {
     setIsUpoadingCompleted(isCompleted);
   };
 
+  const sendDataToDB = async (collectionName, noteName, url, fileSize) => {
+    const res = await apiPrivateInstance.post("/note", {
+      collectionName,
+      noteName,
+      url,
+      fileSize,
+    });
+    return res.data;
+  };
+
+  const SendFiles = async (file) => {
+    try {
+      const uniqueId = nanoid();
+      const ext = file.name.slice(-5);
+
+      // Rename file
+      const nameChanged = new File([file], `${file.name}--${uniqueId}${ext}`);
+
+      const blockBlobClient = containerClient.getBlockBlobClient(
+        nameChanged.name
+      );
+
+      const azurePromise = await blockBlobClient.uploadBrowserData(nameChanged);
+
+      const apiCallPromise = await apiPrivateInstance.post("/note", {
+        collectionName: selectedCollection,
+        noteName: file.name,
+        url: `https://duweb.blob.core.windows.net/pdf/${nameChanged.name}`,
+        fileSize: file.size,
+      });
+
+      setIsUploading(true);
+      setFiles([]);
+      toast({
+        title: `${file.name} Uploaded successfuly`,
+
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+
+      setFileData([]);
+      setUploadLoading(false);
+    } catch (error) {
+      setUploadLoading(false);
+      toast({
+        title: "Files not uploaded",
+
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  };
+
   const uploadFiles = async () => {
     try {
-      const promises = [];
+      const dbData = [];
 
       if (!selectedCollection)
         return toast({
@@ -96,71 +159,17 @@ const Upload = () => {
           isClosable: true,
         });
       }
+
+      const promises = [];
+
+      // lOOP OVER MULTIPLE INPUT FILE
       setUploadLoading(true);
       for (const file of files) {
-        const uniqueId = nanoid();
-        const ext = file.name.slice(-5);
-
-        const nameChanged = new File([file], `${file.name}--${uniqueId}${ext}`);
-
-        const obj = {
-          collectionName,
-          NoteName: file.name,
-          url: `https://duweb.blob.core.windows.net/pdf/${nameChanged.name}`,
-        };
-
-        const blockBlobClient = containerClient.getBlockBlobClient(
-          nameChanged.name
-        );
-        blockBlobClient
-          .uploadBrowserData(nameChanged)
-          .then((res) => {
-            apiPrivateInstance
-              .post("/note", {
-                collectionName: selectedCollection,
-                noteName: obj.NoteName,
-                url: obj.url,
-                fileSize: file.size,
-              })
-              .then((res) => {
-                console.log(res.data);
-                setIsUploading(true);
-                setFiles([]);
-                toast({
-                  title: "Files Uploaded successfuly",
-
-                  status: "success",
-                  duration: 2000,
-                  isClosable: true,
-                });
-
-                setFileData([]);
-                setUploadLoading(false);
-              })
-              .catch((err) => {
-                console.log("mongo", err);
-                setUploadLoading(false);
-                toast({
-                  title: "Files not uploaded",
-
-                  status: "error",
-                  duration: 2000,
-                  isClosable: true,
-                });
-              });
-          })
-          .catch((err) => {
-            console.log("az", err);
-            setUploadLoading(false);
-            toast({
-              title: "File not uploaded",
-
-              status: "error",
-              duration: 2000,
-              isClosable: true,
-            });
-          });
+        promises.push(SendFiles(file));
       }
+
+      const nestedPromises = await Promise.allSettled(promises);
+      setUploadLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -216,6 +225,7 @@ const Upload = () => {
                   getColllection();
                 }}
                 onChange={(e) => {
+                  console.log(e);
                   setSelectedCollection(e);
                 }}
                 size="large"
@@ -232,11 +242,11 @@ const Upload = () => {
         </div>
         <Divider className="bg-gray-200" />
         <div className="flex font-sans flex-1 items-center  flex-col mt-10  ">
-          <Text h={"10"} mb='8' textAlign="center">
+          <Text h={"1"} mb="4" textAlign="center">
             Check your profile after uploading files
           </Text>
 
-          <div className="flex  gap-6 lg:gap-10 items-center">
+          <div className="flex flex-col  gap-4 lg:gap-10 items-center">
             <div className="">
               <input
                 id="selected"
@@ -303,7 +313,7 @@ const Upload = () => {
                 Only pdf, doc, docx , txt and image files are accepted
               </Text>
             </div>
-            <div className="mr-4">
+            <div className="">
               <CButton
                 w={"32"}
                 leftIcon={<CloudUploadOutlined />}
@@ -320,7 +330,7 @@ const Upload = () => {
             {fileData &&
               fileData.map((item) => (
                 <UploadedFiles
-                  key={item.lastModified}
+                  key={item.key}
                   fileName={item.name}
                   fileSize={item.size}
                 />
