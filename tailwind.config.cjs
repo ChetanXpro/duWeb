@@ -9,9 +9,7 @@ module.exports = {
       colors:{
         trans:'rgb(0,0,0,0.9)'
       },
-      backgroundImage:{
-        'hero-image':'url("./assets/earth.jpg")'
-      },
+      
     },
   },
   plugins: [],
