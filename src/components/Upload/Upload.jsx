@@ -16,7 +16,7 @@ import {
 
 import { CloudUploadOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-console.log(process.env.REACT_APP_SERVICE)
+
 const blobServiceClient = new BlobServiceClient(process.env.REACT_APP_SERVICE);
 const containerClient = blobServiceClient.getContainerClient("pdf");
 
