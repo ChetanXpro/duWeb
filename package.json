@@ -18,6 +18,7 @@
     "antd": "^5.1.4",
     "axios": "^1.2.2",
     "framer-motion": "^8.4.0",
+    "http": "^0.0.1-security",
     "jotai": "^1.13.0",
     "jwt-decode": "^3.1.2",
     "nanoid": "^4.0.0",

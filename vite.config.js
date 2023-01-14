@@ -11,4 +11,16 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 1600,
   },
+
+  resolve: {
+    alias: [
+      {
+        find: '@', replacement: path.resolve(__dirname, './src'),
+      },
+      {
+        find: './runtimeConfig', replacement: './runtimeConfig.browser',
+      }
+
+    ]
+  }
 });
