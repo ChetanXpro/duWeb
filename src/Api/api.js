@@ -10,11 +10,11 @@ export const apiInstance = axios.create({
 
 export const apiPrivateInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000,
+  timeout: 10000,
   headers: {
     "Content-type": "application/json",
   },
-  withCredentials: true,
+ 
 });
 
 export const login = async (payload) => {
