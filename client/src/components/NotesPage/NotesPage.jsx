@@ -22,7 +22,7 @@ const NotesPage = () => {
     <div className="flex items-center justify-center mt-2 lg:ml-6 md:ml-6 xl:ml-6 lg:p-4 lg:justify-start md:justify-start xl:justify-start flex-wrap md:mt-12 lg:mt-6 xl:mt-10 ">
       {data.arr.length > 0 ? (
         data.arr.map((i) => (
-          <Notes re={refetchData} key={i.id} id={i.id} name={i.name} url={i.url} />
+          <Notes re={refetchData} key={i.id} id={i.id} name={i.name} size={i.size} url={i.url} />
         ))
       ) : (
         <div className="h-full w-full flex mt-40 lg:mt-4 md:mt-4 xl:mt-4  items-center  justify-center">

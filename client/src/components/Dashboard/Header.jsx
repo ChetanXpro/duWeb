@@ -11,17 +11,20 @@ import logo from "../../assets/nobg.png";
 import { Icon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { AntDesignOutlined, MenuFoldOutlined } from "@ant-design/icons";
 
-
-
 import MenuItems from "./MenuItems";
+import AvtarDrop from "./AvtarDrop";
 
 const Header = () => {
   const [active, setActive] = useState(false);
+  const [avtarDrop, setAvtarDrop] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
   const [userData, setUser] = useAtom(user);
   const navigate = useNavigate();
   const showMenu = () => {
     setActive(!active);
+  };
+  const showAvtarDrop = (e) => {
+    setAvtarDrop(!avtarDrop);
   };
 
   return (
@@ -92,7 +95,17 @@ const Header = () => {
             />
 
             <div className="ml-4 mr-2">
-              <Avatar name={`${userData?.name}`} size={"sm"} />
+              <div className=" flex items-center relative    ">
+                <button>
+                  <Avatar
+                    name={`${userData?.name}`}
+                    size={"sm"}
+                    onClick={showAvtarDrop}
+                    className=" cursor-pointer"
+                  />
+                </button>
+                {avtarDrop && <AvtarDrop setAvtarDrop={setAvtarDrop} />}
+              </div>
             </div>
           </div>
         </ul>

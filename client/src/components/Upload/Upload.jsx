@@ -99,8 +99,9 @@ const Upload = () => {
       setUploadLoading(true);
       for (const file of files) {
         const uniqueId = nanoid();
+        const ext = file.name.slice(-5);
 
-        const nameChanged = new File([file], `${uniqueId}${file.name}`);
+        const nameChanged = new File([file], `${file.name}--${uniqueId}${ext}`);
 
         const obj = {
           collectionName,
@@ -119,6 +120,7 @@ const Upload = () => {
                 collectionName: selectedCollection,
                 noteName: obj.NoteName,
                 url: obj.url,
+                fileSize: file.size,
               })
               .then((res) => {
                 console.log(res.data);
@@ -210,7 +212,6 @@ const Upload = () => {
 
               <Select
                 showSearch
-               
                 onFocus={() => {
                   getColllection();
                 }}
@@ -230,14 +231,11 @@ const Upload = () => {
           </div>
         </div>
         <Divider className="bg-gray-200" />
-        <div className="flex flex-1  flex-col mt-10  ">
-          <CButton onClick={() => navigate("/profile")} h={"10"} mb="6">
-            Profile
-          </CButton>
-
-          <Text h={"10"} textAlign="center" mb="6">
+        <div className="flex font-sans flex-1 items-center  flex-col mt-10  ">
+          <Text h={"10"} mb='8' textAlign="center">
             Check your profile after uploading files
           </Text>
+
           <div className="flex  gap-6 lg:gap-10 items-center">
             <div className="">
               <input
@@ -297,8 +295,9 @@ const Upload = () => {
                 className={`h-[8rem] cursor-pointer w-[16rem] border-2 flex items-center text-center justify-center  border-dashed ${
                   colorMode === "dark" ? "border-gray-400" : "border-gray-600"
                 }`}
-              ><SearchOutlined />
-                <Text ml={'1.5'}>Browse files</Text>
+              >
+                <SearchOutlined />
+                <Text ml={"1.5"}>Browse files</Text>
               </div>
               <Text fontSize={"x-small"} mt={"1"}>
                 Only pdf, doc, docx , txt and image files are accepted

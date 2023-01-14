@@ -7,6 +7,7 @@ import {
   IconButton,
   Image,
   Text,
+  Tooltip,
   useColorMode,
   useToast,
 } from "@chakra-ui/react";
@@ -17,15 +18,9 @@ import { useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import folder from "../../assets/folder.ico";
 
-
 import usePrivateApis from "../../hooks/usePrivateApis";
 
-const Folder = ({
-  name = "history",
-  totalitemsInside = 0,
-  id,
-  re,
-}) => {
+const Folder = ({ name = "history", totalitemsInside = 0, id, re }) => {
   const { deleteCollection } = usePrivateApis();
   const toast = useToast({ position: "top" });
   const queryClient = useQueryClient();
@@ -53,9 +48,9 @@ const Folder = ({
           title="All files inside this folder will deleted"
           description={`Are you sure to delete ${name} Folder `}
           onConfirm={() => {
-            deleteCollection(id,re);
+            deleteCollection(id, re);
             queryClient.invalidateQueries("collection");
-            
+
             toast({
               title: `${name} Folder Deleted`,
               status: "success",
@@ -68,8 +63,13 @@ const Folder = ({
           cancelText="Cancel"
         >
           <a href="#">
-            <IconButton colorScheme={'red'} icon={<DeleteIcon className="" />}/>
-            
+            <Tooltip placement="top" label="Delete" aria-label="A tooltip">
+              <IconButton
+                size={"sm"}
+                colorScheme={"red"}
+                icon={<DeleteIcon className="" />}
+              />
+            </Tooltip>
           </a>
         </Popconfirm>
       </div>

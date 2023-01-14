@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 // import { getUser } from "../Api/api";
 import img from "../../assets/boon.png";
 
-const Home = () => {
+const EntryPage = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -19,10 +19,7 @@ const Home = () => {
           Soon more features will be available
         </Text>
         {/* <Button onClick={() => navigate("/upload")}>Get Started</Button> */}
-        <button
-          onClick={() => navigate("/upload")}
-          className="cssbuttons-io-button"
-        >
+        <button className="cssbuttons-io-button">
           Get started
           <div className="iconn">
             <svg
@@ -55,4 +52,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default EntryPage;
