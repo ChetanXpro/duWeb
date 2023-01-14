@@ -45,7 +45,7 @@ const Header = () => {
       </div>
 
       <nav>
-        <div className="absolute cursor-pointer right-6 md:hidden top-6 scale-150">
+        <div className="absolute flex items-center cursor-pointer right-6 md:hidden top-6 scale-150">
           <MenuFoldOutlined
             onClick={showMenu}
             className="scale-150 cursor-pointer"

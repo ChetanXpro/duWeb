@@ -31,15 +31,15 @@ const MenuItems = ({ showMenu, active }) => {
     >
       
       <CloseOutlined onClick={showMenu}  />
-      <Link to={"/"} className="">
+      <Link onClick={showMenu} to={"/"} className="">
         <Text>Home</Text>
       </Link>
 
-      <Link to={"/profile"} >
+      <Link onClick={showMenu} to={"/profile"} >
         <Text>Profile</Text>
       </Link>
 
-      <Link to={"/upload"} >
+      <Link onClick={showMenu} to={"/upload"} >
         <Text>Upload</Text>
       </Link>
       <div className="flex gap-1 items-center">
