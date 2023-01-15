@@ -60,6 +60,7 @@ const Upload = () => {
       });
 
       setCollectionName("");
+      getColllection();
       setLoading(false);
       toast({
         title: `${collectionName} Folder is created`,
@@ -221,9 +222,7 @@ const Upload = () => {
 
               <Select
                 showSearch
-                onFocus={() => {
-                  getColllection();
-                }}
+                
                 onChange={(e) => {
                   console.log(e);
                   setSelectedCollection(e);
