@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
+import useAzureblob from "./useAzureblob";
 
 const usePrivateApis = () => {
   const apiPrivateInstance = useAxiosPrivate();
+  const { pdfContainerClient } = useAzureblob();
 
   const getCollection = async () => {
     try {
@@ -48,6 +50,7 @@ const usePrivateApis = () => {
     try {
       const request = await apiPrivateInstance.delete(`/note/?noteID=${id}`);
       re();
+// pdfContainerClient.deleteBlob()
       return request?.data;
     } catch (err) {
       const error = err;

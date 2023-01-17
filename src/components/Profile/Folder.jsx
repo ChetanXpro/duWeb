@@ -80,14 +80,16 @@ const Folder = ({ name = "history", totalitemsInside = 0, id, re }) => {
         </div>
         <Divider className="mt-1 bg-slate-400 mb-0" />
         <div className="flex  mb-1 justify-between text-left w-full  h-12 pl-4  flex-col">
-          <div className="text-lg capitalize font-sans text-left ">
-            <Text>{name?.length > 12 ? `${name?.slice(0, 12)}...` : name}</Text>
+          <div className="text-sm capitalize font-sans text-left ">
+            <Text className="truncate">{name}</Text>
           </div>
           <div className="text-xs font-sans">
             <Text>
               {`${
                 totalitemsInside > 0
-                  ? `${totalitemsInside} files`
+                  ? `${totalitemsInside} ${
+                      totalitemsInside > 1 ? "files" : "file"
+                    } inside`
                   : "Folder is empty"
               } `}
             </Text>
