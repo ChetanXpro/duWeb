@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { BlobServiceClient } from "@azure/storage-blob";
 import { nanoid } from "nanoid";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-const blobServiceClient = new BlobServiceClient(import.meta.env.VITE_SERVICE);
-const containerClient = blobServiceClient.getContainerClient("pdf");
 import { Avatar, Button, Divider, Input, List, Select } from "antd";
 import Search from "antd/es/input/Search";
 import UploadedFiles from "./UploadedFiles";
@@ -18,8 +15,10 @@ import {
 
 import { CloudUploadOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import useAzureblob from "../../hooks/useAzureblob";
 
 const Upload = () => {
+  const { pdfContainerClient } = useAzureblob();
   const { colorMode } = useColorMode();
   const apiPrivateInstance = useAxiosPrivate();
   const [files, setFiles] = useState(null);
@@ -101,7 +100,7 @@ const Upload = () => {
       // Rename file
       const nameChanged = new File([file], `${file.name}--${uniqueId}${ext}`);
 
-      const blockBlobClient = containerClient.getBlockBlobClient(
+      const blockBlobClient = pdfContainerClient.getBlockBlobClient(
         nameChanged.name
       );
 
@@ -111,6 +110,7 @@ const Upload = () => {
         collectionName: selectedCollection,
         noteName: file.name,
         url: `https://duweb.blob.core.windows.net/pdf/${nameChanged.name}`,
+        blobName: nameChanged.name,
         fileSize: file.size,
       });
 
@@ -222,7 +222,6 @@ const Upload = () => {
 
               <Select
                 showSearch
-                
                 onChange={(e) => {
                   console.log(e);
                   setSelectedCollection(e);

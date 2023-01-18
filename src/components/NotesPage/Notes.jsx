@@ -16,7 +16,7 @@ import { Popconfirm } from "antd";
 import { useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import usePrivateApis from "../../hooks/usePrivateApis";
-const Notes = ({ name, url, re, id,size }) => {
+const Notes = ({ name, url, re, id, size }) => {
   const { deleteNote } = usePrivateApis();
 
   const toast = useToast({ position: "top" });
@@ -63,7 +63,7 @@ const Notes = ({ name, url, re, id,size }) => {
             title="You cannot recover after deleting"
             description={`Are you sure to delete ${name}  `}
             onConfirm={() => {
-              deleteNote(id, re);
+              deleteNote(id, re, name);
               queryClient.invalidateQueries("note");
 
               toast({
@@ -103,8 +103,8 @@ const Notes = ({ name, url, re, id,size }) => {
         </Tooltip>
         <Divider className="mt-1 bg-slate-400 mb-0" />
         <div className="flex z-10   mb-1 justify-between text-left w-full  h-16 pl-4  flex-col">
-          <div className="text-sm capitalize font-sans text-left ">
-            <Text>{name?.length > 12 ? `${name?.slice(0, 12)}...` : name}</Text>
+          <div className="text-sm capitalize font-sans  text-left ">
+            <Text className="truncate text-sm">{name}</Text>
           </div>
           <div className=" ">
             <a href={url}>
