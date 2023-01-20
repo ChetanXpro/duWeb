@@ -8,10 +8,6 @@ export default defineConfig({
     host: true,
     port: 3000,
   },
-  build: {
-    chunkSizeWarningLimit: 1600,
-  },
-
   resolve: {
     alias: [
       

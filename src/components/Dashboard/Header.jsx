@@ -33,7 +33,10 @@ const Header = () => {
         colorMode === "dark" ? "bg-gray-900" : "bg-gray-200"
       }   font-mono    h-16  flex justify-between p-4 items-center`}
     >
-      <div className="text-md flex items-center  justify-center font-bold text-center uppercase">
+      <div
+        onClick={() => navigate("/")}
+        className="text-md flex items-center cursor-pointer  justify-center font-bold text-center uppercase"
+      >
         <h1>
           cloud <span className="block text-2xl">Notes</span>
         </h1>
@@ -60,6 +63,9 @@ const Header = () => {
             <Text>Home</Text>
           </Link>
 
+          <Link to={"/public"} className=" ml-4">
+            <Text>Public</Text>
+          </Link>
           <Link to={"/profile"} className=" ml-4">
             <Text>Profile</Text>
           </Link>
