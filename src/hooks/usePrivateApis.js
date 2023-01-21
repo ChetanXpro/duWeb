@@ -124,6 +124,25 @@ const usePrivateApis = () => {
     }
   };
 
+  const createPublicNotes = async (payload) => {
+    try {
+      const request = await apiPrivateInstance.get(`/admin/addnote`, {
+        university: payload.university,
+        course: payload.course,
+        semester: payload.semester,
+        subject: payload.subject,
+        name: payload.name,
+        url: payload.url,
+        fileSize: payload.fileSize,
+      });
+
+      return request?.data;
+    } catch (err) {
+      const error = err;
+      return Promise.reject(error.response);
+    }
+  };
+
   return {
     getCollection,
     deleteNote,

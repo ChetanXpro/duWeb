@@ -6,13 +6,13 @@ import useAuthentication from "../hooks/useAuthentication";
 import { useAtom } from "jotai";
 
 const RequireAuth = () => {
-  // const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
+ 
   const { isLoggedIn, isLogin } = useAuthentication();
 
-  // console.log(isLoggedIn);
+ 
   return (
     <>
-      {isLoggedIn || isLogin ? (
+      {isLogin ? (
         <Outlet />
       ) : (
         <Navigate to={"/sign_in"} replace state={{ path: location.pathname }} />

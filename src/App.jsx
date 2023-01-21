@@ -15,6 +15,9 @@ import NotesPage from "./components/NotesPage/NotesPage";
 import EntryPage from "./components/EntryPage/EntryPage";
 import EntryDashboard from "./components/EntryPage/EntryDashboard";
 import PublicNotes from "./components/PublicNotes/PublicNotes";
+import UploadPublicNotes from "./components/Admin/UploadPublicNotes";
+import RequireAdmin from "./components/RequireAdmin";
+import ErrorPage from "./components/404/ErrorPage";
 
 function App() {
   return (
@@ -34,10 +37,12 @@ function App() {
             <Route path="profile/:id" element={<NotesPage />} />
             <Route path="upload" element={<UploadFile />} />
             <Route path="public" element={<PublicNotes />} />
+            <Route path="uploadfiles" element={<RequireAdmin />}>
+              <Route index element={<UploadPublicNotes />} />
+            </Route>
           </Route>
         </Route>
-        <Route path="*" element={<Navigate replace to="/sign_in" />} />
-        //{" "}
+        <Route path="*" element={<ErrorPage />} />
       </Route>
     </Routes>
   );

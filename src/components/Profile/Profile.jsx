@@ -36,13 +36,13 @@ const Profile = () => {
   const setFav = () => {
     // setSelectedArea('favourite')
     selectedArea.current = "favourite";
-    console.log("fav");
+    
   };
 
   const setFolder = () => {
     selectedArea.current = "folder";
   };
-  console.log(selectedArea);
+
 
   return (
     <div className="flex flex-col relative  items-center">

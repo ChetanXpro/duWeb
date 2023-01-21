@@ -45,9 +45,7 @@ const Login = () => {
 
       navigate(from, { replace: true });
     },
-    onError: () => {
-      console.log("error" + error);
-    },
+  
   });
 
   const handleSubmit = (e) => {

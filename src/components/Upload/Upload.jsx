@@ -29,7 +29,7 @@ const Upload = () => {
   const [fetchedCollection, setFeatchedCollection] = useState([]);
   const [collectionName, setCollectionName] = useState("");
   const [selectedCollection, setSelectedCollection] = useState("");
-  console.log(fetchedCollection)
+
 
   const toast = useToast({ position: "top" });
 
@@ -224,7 +224,7 @@ const Upload = () => {
               <Select
                 showSearch
                 onChange={(e) => {
-                  console.log(e);
+            
                   setSelectedCollection(e);
                 }}
                 size="large"

@@ -26,6 +26,7 @@ const Header = () => {
   const showAvtarDrop = (e) => {
     setAvtarDrop(!avtarDrop);
   };
+ 
 
   return (
     <div
@@ -69,6 +70,13 @@ const Header = () => {
           <Link to={"/profile"} className=" ml-4">
             <Text>Profile</Text>
           </Link>
+          {userData.role === "admin" ? (
+            <Link to={"/uploadfiles"} className=" ml-4">
+              <Text>Admin</Text>
+            </Link>
+          ) : (
+            ""
+          )}
 
           <Link to={"/upload"} className="ml-4">
             <Text>Upload</Text>
