@@ -54,18 +54,7 @@ const Favourite = () => {
                 You dont have any Favourite
               </Text>
             }
-          >
-            <CButton
-              width={"40"}
-              mt={"5"}
-              onClick={() => {
-                navigate("/upload");
-              }}
-              colorScheme="blue"
-            >
-              Create folder
-            </CButton>
-          </Empty>
+          ></Empty>
         </div>
       )}
     </div>
