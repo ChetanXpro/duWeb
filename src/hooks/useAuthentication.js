@@ -16,13 +16,12 @@ const useAuthentication = () => {
   const isLogin = !!localStorage.getItem("jwt");
   const token = localStorage.getItem("jwt");
   const isAdmin = token ? jwtDecode(token)?.role === "admin" : null;
-  console.log(isAdmin);
 
   useEffect(() => {
     const fetchuser = async () => {
       try {
         const request = await apiPrivateInstance.get("/user/getUser");
-        console.log(request.data);
+
         setData(request.data);
         setUserData(request?.data);
       } catch (err) {

@@ -21,7 +21,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const toast = useToast({ position: "top" });
 
-  console.log(validName);
+  
   useEffect(() => {
     setValidName(PWD_REGEX.test(password));
   }, [password]);

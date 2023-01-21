@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 const RequireAdmin = () => {
   const [userData, setUserData] = useAtom(user);
   const { isAdmin } = useAuthentication();
-  console.log(userData);
+ 
   return (
     <>
       {isAdmin  ? (

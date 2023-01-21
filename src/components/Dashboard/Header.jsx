@@ -26,7 +26,7 @@ const Header = () => {
   const showAvtarDrop = (e) => {
     setAvtarDrop(!avtarDrop);
   };
-  console.log(userData)
+ 
 
   return (
     <div
