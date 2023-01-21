@@ -1,69 +1,163 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Button, Heading, Text } from "@chakra-ui/react";
 import { Select } from "antd";
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { getUniversityDetails, getUniversityList } from "../../Api/api";
+import {
+  getUniversityDetails,
+  getUniversityList,
+  searchNotes,
+} from "../../Api/api";
+import usePrivateApis from "../../hooks/usePrivateApis";
+import Notes from "../NotesPage/Notes";
+import NotesCard from "./NoteCard";
 
 const PublicNotes = () => {
   const [selectedUniversity, setSelectedUniversity] = useState("");
-
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
+  const { addFav } = usePrivateApis();
   const { data: universityList } = useQuery(
     "universityList",
     getUniversityList
   );
 
   const { data, mutate, isLoading } = useMutation(getUniversityDetails);
+  const {
+    data: foundNotes,
+    mutate: search,
+    isLoading: searchingNotes,
+  } = useMutation(searchNotes);
+
+  const { mutate: add } = useMutation(addFav);
 
   const handleSelected = (value) => {
+    setSelectedUniversity(value);
     mutate(value);
   };
+  const handleSearch = () => {
+    const payload = {
+      selectedUniversity,
+      selectedCourse,
+      selectedSemester,
+      selectedSubject,
+    };
+    search(payload);
+  };
 
+  // const addtoFav = async (id) => {
+  //   console.log("Called");
+  //   add(id);
+  // };
   return (
     <div className="w-full">
       <div className="flex items-center justify-center">
-        <Heading>Search of Notes</Heading>
+        <Heading mt={"2"}>Search Your Notes</Heading>
+      </div>
+      <div className=" flex flex-col md:flex-row lg:flex-row items-center mt-6 gap-6 justify-center">
+        <div>
+          <Text>1. Search your University</Text>
+          <Select
+            showSearch
+            onSelect={handleSelected}
+            style={{
+              width: 200,
+            }}
+            placeholder="Search University"
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              return option.label.toLowerCase().includes(input.toLowerCase());
+            }}
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={universityList}
+          />
+        </div>
+        <div>
+          <Text>2. Search your Course</Text>
+          <Select
+            showSearch
+            onSelect={(value) => setSelectedCourse(value)}
+            style={{
+              width: 200,
+            }}
+            placeholder="Search Your course"
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              return option.label.toLowerCase().includes(input.toLowerCase());
+            }}
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={data?.course}
+          />
+        </div>
+        <div>
+          <Text>3. Search your Semester</Text>
+          <Select
+            showSearch
+            onSelect={(value) => setSelectedSemester(value)}
+            style={{
+              width: 200,
+            }}
+            placeholder="Search your semester"
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              return option.label.includes(input);
+            }}
+            options={data?.semester}
+          />
+        </div>
+        <div>
+          <Text>4. Search your Subject</Text>
+          <Select
+            showSearch
+            onSelect={(value) => setSelectedSubject(value)}
+            style={{
+              width: 200,
+            }}
+            placeholder="Search your subject"
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              return option.label.toLowerCase().includes(input.toLowerCase());
+            }}
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={data?.subject}
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-center mt-8">
+        <Button onClick={handleSearch} isLoading={searchingNotes}>
+          Search Notes
+        </Button>
+      </div>
+      <div className="flex flex-wrap">
+        {foundNotes &&
+          foundNotes.notes.map((n) => (
+            <NotesCard
+              key={n.id}
+              id={n.id}
+              name={n.name}
+             add={add}
+              size={n.size}
+              url={n.url}
+            />
+          ))}
       </div>
     </div>
   );
 };
-'pending appoval' 
+("pending appoval");
 export default PublicNotes;
 
 {
-  /* <Select
-          showSearch
-          onSelect={handleSelected}
-          style={{
-            width: 200,
-          }}
-          placeholder="Search University"
-          optionFilterProp="children"
-          filterOption={(input, option) => {
-            return option.label.toLowerCase().includes(input.toLowerCase());
-          }}
-          filterSort={(optionA, optionB) =>
-            (optionA?.label ?? "")
-              .toLowerCase()
-              .localeCompare((optionB?.label ?? "").toLowerCase())
-          }
-          options={universityList}
-        />
-        <Select
-          showSearch
-          onSelect={(value) => setSelectedUniversity(value)}
-          style={{
-            width: 200,
-          }}
-          placeholder="Search Your course"
-          optionFilterProp="children"
-          filterOption={(input, option) => {
-            return option.label.toLowerCase().includes(input.toLowerCase());
-          }}
-          filterSort={(optionA, optionB) =>
-            (optionA?.label ?? "")
-              .toLowerCase()
-              .localeCompare((optionB?.label ?? "").toLowerCase())
-          }
-          options={data?.course}
-        /> */
 }

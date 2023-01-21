@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import useAzureblob from "./useAzureblob";
@@ -5,6 +6,7 @@ import useAzureblob from "./useAzureblob";
 const usePrivateApis = () => {
   const apiPrivateInstance = useAxiosPrivate();
   const { pdfContainerClient } = useAzureblob();
+  const toast = useToast({ position: "top" });
 
   const getCollection = async () => {
     try {
@@ -50,7 +52,71 @@ const usePrivateApis = () => {
     try {
       const request = await apiPrivateInstance.delete(`/note/?noteID=${id}`);
       re();
-// pdfContainerClient.deleteBlob()
+
+      return request?.data;
+    } catch (err) {
+      const error = err;
+      return Promise.reject(error.response);
+    }
+  };
+  const addFav = async (noteId) => {
+    try {
+      const request = await apiPrivateInstance.post(`/public/add`, {
+        noteId,
+      });
+      if (request.status === 400) {
+        toast({
+          title: `Aready Added in Favourite`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      } else if (request.status === 200) {
+        toast({
+          title: `Added in Favourite`,
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+      return request?.data;
+    } catch (err) {
+      const error = err;
+      return Promise.reject(error.response);
+    }
+  };
+  const removeFav = async (id) => {
+    try {
+      const request = await apiPrivateInstance.post(`/public/deletefavourite`, {
+        noteId: id,
+      });
+
+      if (request.status === 400) {
+        toast({
+          title: `Something went wrong`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      } else if (request.status === 200) {
+        toast({
+          title: `Removed from Favourite`,
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+
+      return request?.data;
+    } catch (err) {
+      const error = err;
+      return Promise.reject(error.response);
+    }
+  };
+  const getFavList = async () => {
+    try {
+      const request = await apiPrivateInstance.get(`/public/favourite`);
+
       return request?.data;
     } catch (err) {
       const error = err;
@@ -63,6 +129,9 @@ const usePrivateApis = () => {
     deleteNote,
     getNotes,
     deleteCollection,
+    addFav,
+    removeFav,
+    getFavList,
   };
 };
 

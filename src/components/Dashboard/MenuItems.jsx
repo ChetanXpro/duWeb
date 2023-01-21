@@ -36,6 +36,9 @@ const MenuItems = ({ showMenu, active }) => {
       <Link className="hover:underline" onClick={showMenu} to={"/profile"}>
         <Text>Profile</Text>
       </Link>
+      <Link className="hover:underline" onClick={showMenu} to={"/public"}>
+        <Text>Public</Text>
+      </Link>
 
       <Link className="hover:underline" onClick={showMenu} to={"/upload"}>
         <Text>Upload</Text>
