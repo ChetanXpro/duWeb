@@ -14,6 +14,7 @@ import UploadFile from "./components/Upload/Upload";
 import NotesPage from "./components/NotesPage/NotesPage";
 import EntryPage from "./components/EntryPage/EntryPage";
 import EntryDashboard from "./components/EntryPage/EntryDashboard";
+import PublicNotes from "./components/PublicNotes/PublicNotes";
 
 function App() {
   return (
@@ -31,8 +32,8 @@ function App() {
             <Route path="setting" element={<Setting />} />
             <Route path="profile" element={<Profile />} />
             <Route path="profile/:id" element={<NotesPage />} />
-            {/* <Route path="profile/:id" element={<NotesPage />} /> */}
             <Route path="upload" element={<UploadFile />} />
+            <Route path="public" element={<PublicNotes />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate replace to="/sign_in" />} />

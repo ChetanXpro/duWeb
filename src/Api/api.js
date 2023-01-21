@@ -14,7 +14,6 @@ export const apiPrivateInstance = axios.create({
   headers: {
     "Content-type": "application/json",
   },
- 
 });
 
 export const login = async (payload) => {
@@ -26,6 +25,7 @@ export const login = async (payload) => {
     return Promise.reject(error.response);
   }
 };
+
 export const signup = async (payload) => {
   try {
     const request = await apiInstance.post("/user", payload);
@@ -40,6 +40,41 @@ export const signup = async (payload) => {
 export const getUser = async () => {
   try {
     const request = await apiPrivateInstance.get("/user/getUser");
+    return request?.data;
+  } catch (err) {
+    const error = err;
+    return Promise.reject(error.response);
+  }
+};
+
+export const getUniversityList = async (payload) => {
+  try {
+    const request = await apiInstance.get("/public/university", payload);
+    return request?.data?.universityName;
+  } catch (err) {
+    const error = err;
+    return Promise.reject(error.response);
+  }
+};
+export const getUniversityDetails = async (selectedUniversity) => {
+  try {
+    const request = await apiInstance.post("/public/university", {
+      selectedUniversity,
+    });
+    return request?.data;
+  } catch (err) {
+    const error = err;
+    return Promise.reject(error.response);
+  }
+};
+export const searchNotes = async (payload) => {
+  try {
+    const request = await apiInstance.post("/public/search", {
+      selectedUniversity: payload.selectedUniversity,
+      selectedCourse: payload.selectedCourse,
+      selectedSemester: payload.selectedSemester,
+      selectedSubject: payload.selectedSubject,
+    });
     return request?.data;
   } catch (err) {
     const error = err;
