@@ -52,7 +52,7 @@ const PublicNotes = () => {
   return (
     <div className="w-full">
       <div className="flex items-center justify-center">
-        <Heading mt={"2"}>Search Your Notes</Heading>
+        <Heading mt={"2"}>Search Your University Notes</Heading>
       </div>
       <div className=" flex flex-col md:flex-row lg:flex-row items-center mt-6 gap-6 justify-center">
         <div>
@@ -147,7 +147,7 @@ const PublicNotes = () => {
               key={n.id}
               id={n.id}
               name={n.name}
-             add={add}
+              add={add}
               size={n.size}
               url={n.url}
             />
