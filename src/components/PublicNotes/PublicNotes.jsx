@@ -13,8 +13,7 @@ import NotesCard from "./NoteCard";
 
 const PublicNotes = () => {
   const [selectedUniversity, setSelectedUniversity] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [selectedSemester, setSelectedSemester] = useState("");
+
   const [selectedSubject, setSelectedSubject] = useState("");
   const { addFav } = usePrivateApis();
   const { data: universityList } = useQuery(
@@ -38,8 +37,7 @@ const PublicNotes = () => {
   const handleSearch = () => {
     const payload = {
       selectedUniversity,
-      selectedCourse,
-      selectedSemester,
+
       selectedSubject,
     };
     search(payload);
@@ -76,45 +74,11 @@ const PublicNotes = () => {
             options={universityList}
           />
         </div>
+        
+    
+  
         <div>
-          <Text>2. Search your Course</Text>
-          <Select
-            showSearch
-            onSelect={(value) => setSelectedCourse(value)}
-            style={{
-              width: 200,
-            }}
-            placeholder="Search Your course"
-            optionFilterProp="children"
-            filterOption={(input, option) => {
-              return option.label.toLowerCase().includes(input.toLowerCase());
-            }}
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={data?.course}
-          />
-        </div>
-        <div>
-          <Text>3. Search your Semester</Text>
-          <Select
-            showSearch
-            onSelect={(value) => setSelectedSemester(value)}
-            style={{
-              width: 200,
-            }}
-            placeholder="Search your semester"
-            optionFilterProp="children"
-            filterOption={(input, option) => {
-              return option.label.includes(input);
-            }}
-            options={data?.semester}
-          />
-        </div>
-        <div>
-          <Text>4. Search your Subject</Text>
+          <Text>2. Search your Subject</Text>
           <Select
             showSearch
             onSelect={(value) => setSelectedSubject(value)}
@@ -141,6 +105,7 @@ const PublicNotes = () => {
         </Button>
       </div>
       <div className="flex flex-wrap">
+    
         {foundNotes &&
           foundNotes.notes.map((n) => (
             <NotesCard

@@ -35,8 +35,7 @@ const UploadPublicNotes = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const apiPrivateInstance = useAxiosPrivate();
   const [selectedUniversity, setSelectedUniversity] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [selectedSemester, setSelectedSemester] = useState("");
+ 
   const [selectedSubject, setSelectedSubject] = useState("");
   const { addFav } = usePrivateApis();
   const toast = useToast({ position: "top" });
@@ -70,8 +69,7 @@ const UploadPublicNotes = () => {
 
       const apiCallPromise = await apiPrivateInstance.post(`/admin/addnote`, {
         university: selectedUniversity,
-        course: selectedCourse,
-        semester: selectedSemester,
+      
         subject: selectedSubject,
         name: file.name,
         url: `https://duweb.blob.core.windows.net/public/${nameChanged.name}`,
@@ -119,9 +117,8 @@ const UploadPublicNotes = () => {
 
       if (
         !selectedUniversity ||
-        !selectedSemester ||
-        !selectedSubject ||
-        !selectedCourse
+       
+        !selectedSubject
       )
         return toast({
           title: "Please select a folder to upload files",
@@ -175,8 +172,7 @@ const UploadPublicNotes = () => {
   const handleSearch = () => {
     const payload = {
       selectedUniversity,
-      selectedCourse,
-      selectedSemester,
+
       selectedSubject,
     };
     search(payload);
@@ -213,45 +209,10 @@ const UploadPublicNotes = () => {
             options={universityList}
           />
         </div>
+       
+       
         <div>
-          <Text>2. Search your Course</Text>
-          <Select
-            showSearch
-            onSelect={(value) => setSelectedCourse(value)}
-            style={{
-              width: 200,
-            }}
-            placeholder="Search Your course"
-            optionFilterProp="children"
-            filterOption={(input, option) => {
-              return option.label.toLowerCase().includes(input.toLowerCase());
-            }}
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={data?.course}
-          />
-        </div>
-        <div>
-          <Text>3. Search your Semester</Text>
-          <Select
-            showSearch
-            onSelect={(value) => setSelectedSemester(value)}
-            style={{
-              width: 200,
-            }}
-            placeholder="Search your semester"
-            optionFilterProp="children"
-            filterOption={(input, option) => {
-              return option.label.includes(input);
-            }}
-            options={data?.semester}
-          />
-        </div>
-        <div>
-          <Text>4. Search your Subject</Text>
+          <Text>2. Search your Subject</Text>
           <Select
             showSearch
             onSelect={(value) => setSelectedSubject(value)}
@@ -354,7 +315,7 @@ const UploadPublicNotes = () => {
             </CButton>
           </div>
         </div>
-        <div className="mt-4 w-full flex flex-col  gap-2 justify-start">
+        <div className="mt-4 w-full  items-center flex flex-col  gap-2 justify-start">
           {fileData &&
             fileData.map((item) => (
               <UploadedFiles
