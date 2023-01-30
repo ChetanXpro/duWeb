@@ -74,9 +74,9 @@ const PublicNotes = () => {
             options={universityList}
           />
         </div>
-        
-    
-  
+
+
+
         <div>
           <Text>2. Search your Subject</Text>
           <Select
@@ -105,8 +105,8 @@ const PublicNotes = () => {
         </Button>
       </div>
       <div className="flex flex-wrap">
-    
-        {foundNotes &&
+
+        {foundNotes && foundNotes.notes.length > 0 ?
           foundNotes.notes.map((n) => (
             <NotesCard
               key={n.id}
@@ -116,7 +116,7 @@ const PublicNotes = () => {
               size={n.size}
               url={n.url}
             />
-          ))}
+          )) : <h1 className="flex  fixed top-[50%] left-[50%] -ml-14">Search Public notes</h1>}
       </div>
     </div>
   );
