@@ -60,7 +60,7 @@ const Notes = ({ name, url, re, id, size }) => {
           <Popconfirm
             placement="bottom"
             color={"blue"}
-            title="You cannot recover after deleting"
+            title="You cannot recover after note after deleting"
             description={`Are you sure to delete ${name}  `}
             onConfirm={() => {
               deleteNote(id, re, name);
