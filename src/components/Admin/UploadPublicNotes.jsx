@@ -11,8 +11,7 @@ import usePrivateApis from "../../hooks/usePrivateApis";
 
 import { nanoid } from "nanoid";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { Avatar, Button, Divider, Input, List } from "antd";
-import Search from "antd/es/input/Search";
+
 
 import {
   useToast,
@@ -20,11 +19,11 @@ import {
   Divider as CDivider,
   Text,
   useColorMode,
-  IconButton,
+  
 } from "@chakra-ui/react";
 
 import { CloudUploadOutlined, SearchOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+
 import useAzureblob from "../../hooks/useAzureblob";
 import UploadedFiles from "../Upload/UploadedFiles";
 

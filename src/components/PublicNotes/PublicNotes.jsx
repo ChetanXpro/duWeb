@@ -8,7 +8,7 @@ import {
   searchNotes,
 } from "../../Api/api";
 import usePrivateApis from "../../hooks/usePrivateApis";
-import Notes from "../NotesPage/Notes";
+
 import NotesCard from "./NoteCard";
 
 const PublicNotes = () => {

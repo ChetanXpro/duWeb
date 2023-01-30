@@ -13,15 +13,15 @@ import pdfImage from "../../assets/pdflogo.png";
 import svgImage from "../../assets/svg.png";
 import docImage from "../../assets/docs.png";
 import { Popconfirm } from "antd";
-import { useQuery, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import {  useQueryClient } from "react-query";
+
 import usePrivateApis from "../../hooks/usePrivateApis";
 const Notes = ({ name, url, re, id, size }) => {
   const { deleteNote } = usePrivateApis();
 
   const toast = useToast({ position: "top" });
   const queryClient = useQueryClient();
-  // const navigate = useNavigate();
+
   const { colorMode } = useColorMode();
 
   const imagesType = [
